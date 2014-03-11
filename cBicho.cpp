@@ -8,6 +8,7 @@ cBicho::cBicho(void)
 	delay=0;
 
 	jumping = false;
+	caure = false;
 }
 cBicho::~cBicho(void){}
 
@@ -145,17 +146,19 @@ void cBicho::MoveLeft(int *map)
 		xaux = x;
 		x -= STEP_LENGTH;
 
-		if(CollidesMapWall(map,false))
+		if(CollidesMapWall(map,false) )
 		{
 			x = xaux;
-			state = STATE_LOOKLEFT;
+			if(!caure && !jumping)state = STATE_LOOKLEFT;
+			else if(caure) state = STATE_CAUREL;
 		}
 	}
 	//Advance, no problem
 	else
 	{
 		x -= STEP_LENGTH;
-		if(state != STATE_WALKLEFT)
+		if(caure && !jumping) state = STATE_CAUREL;
+		else if(state != STATE_WALKLEFT && !jumping)
 		{
 			state = STATE_WALKLEFT;
 			seq = 0;
@@ -172,11 +175,11 @@ void cBicho::MoveRight(int *map)
 	{
 		xaux = x;
 		x += STEP_LENGTH;
-
 		if(CollidesMapWall(map,true))
 		{
 			x = xaux;
-			state = STATE_LOOKRIGHT;
+			if(!caure && !jumping)state = STATE_LOOKRIGHT;
+			else if(caure) state = STATE_CAURER;
 		}
 	}
 	//Advance, no problem
@@ -184,21 +187,50 @@ void cBicho::MoveRight(int *map)
 	{
 		x += STEP_LENGTH;
 
-		if(state != STATE_WALKRIGHT)
+		if(caure && !jumping) state = STATE_CAURER;
+		else if(state != STATE_WALKRIGHT && !jumping)
 		{
 			state = STATE_WALKRIGHT;
 			seq = 0;
 			delay = 0;
 		}
+		
 	}
 }
-void cBicho::Stop()
+void cBicho::Stop(int *map)
 {
-	switch(state)
-	{
-		case STATE_WALKLEFT:	state = STATE_LOOKLEFT;		break;
-		case STATE_WALKRIGHT:	state = STATE_LOOKRIGHT;	break;
+	if(caure){ //caure
+		switch(state)
+		{
+			case STATE_WALKLEFT:	state = STATE_CAUREL;	break;
+			case STATE_WALKRIGHT:	state = STATE_CAURER;	break;
+			case STATE_LOOKLEFT:	state = STATE_CAUREL;	break;
+			case STATE_LOOKRIGHT:	state = STATE_CAURER;	break;
+			case STATE_JUMPINGL:	state = STATE_CAUREL;	break;
+			case STATE_JUMPINGR:	state = STATE_CAURER;	break;
+		}
 	}
+	else if(jumping && !CollidesMapFloor(map)){
+		switch(state)
+		{
+			case STATE_WALKLEFT:	state = STATE_JUMPINGL;	break;
+			case STATE_WALKRIGHT:	state = STATE_JUMPINGR;	break;
+			case STATE_LOOKLEFT:	state = STATE_JUMPINGL;	break;
+			case STATE_LOOKRIGHT:	state = STATE_JUMPINGR;	break;
+		}
+	}
+	else{
+		switch(state)
+		{
+			case STATE_WALKLEFT:	state = STATE_LOOKLEFT;		break;
+			case STATE_WALKRIGHT:	state = STATE_LOOKRIGHT;	break;
+			case STATE_JUMPINGL:	state = STATE_LOOKLEFT;		break;
+			case STATE_JUMPINGR:	state = STATE_LOOKRIGHT;	break;
+			case STATE_CAUREL:		state = STATE_LOOKLEFT;		break;
+			case STATE_CAURER:		state = STATE_LOOKRIGHT;	break;
+		}
+	}
+	
 }
 void cBicho::Jump(int *map)
 {
@@ -209,7 +241,16 @@ void cBicho::Jump(int *map)
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
-		}
+			switch(state)
+			{
+				case STATE_WALKLEFT:	state = STATE_JUMPINGL;	break;
+				case STATE_WALKRIGHT:	state = STATE_JUMPINGR;	break;
+				case STATE_LOOKLEFT:	state = STATE_JUMPINGL;	break;
+				case STATE_LOOKRIGHT:	state = STATE_JUMPINGR;	break;
+				case STATE_CAUREL:		state = STATE_JUMPINGL;	break;
+				case STATE_CAURER:		state = STATE_JUMPINGR;	break;
+			}
+		}		
 	}
 }
 void cBicho::Logic(int *map)
@@ -240,8 +281,10 @@ void cBicho::Logic(int *map)
 	else
 	{
 		//Over floor?
-		if(!CollidesMapFloor(map))
+		if(!CollidesMapFloor(map)){
 			y -= (2*STEP_LENGTH);
+			caure = true;
+		}else caure = false;
 	}
 }
 void cBicho::NextFrame(int max)

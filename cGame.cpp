@@ -27,13 +27,13 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"blocks.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(1);
+	res = Scene.LoadLevel(3);
 	if(!res) return false;
 
 	//Player initialization
-	res = Data.LoadImage(IMG_PLAYER,"bub.png",GL_RGBA);
+	res = Data.LoadImage(IMG_PLAYER,"snowbors256.png",GL_RGBA);
 	if(!res) return false;
-	Player.SetWidthHeight(32,32);
+	//Player.SetWidthHeight(64,64);
 	Player.SetTile(4,1);
 	Player.SetWidthHeight(32,32);
 	Player.SetState(STATE_LOOKRIGHT);
@@ -76,7 +76,7 @@ bool cGame::Process()
 	if(keys[GLUT_KEY_UP])			Player.Jump(Scene.GetMap());
 	if(keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetMap());
 	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetMap());
-	else Player.Stop();
+	else Player.Stop(Scene.GetMap());
 	
 	
 	//Game Logic

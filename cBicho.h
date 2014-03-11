@@ -12,6 +12,11 @@
 #define STATE_LOOKRIGHT		1
 #define STATE_WALKLEFT		2
 #define STATE_WALKRIGHT		3
+#define STATE_JUMPINGL		4
+#define STATE_JUMPINGR		5
+#define STATE_CAUREL		6
+#define STATE_CAURER		7
+
 
 class cRect
 {
@@ -43,7 +48,7 @@ public:
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
 	void Jump(int *map);
-	void Stop();
+	void Stop(int *map);
 	void Logic(int *map);
 
 	int  GetState();
@@ -60,6 +65,7 @@ private:
 	bool jumping;
 	int jump_alfa;
 	int jump_y;
+	bool caure;
 
 	int seq,delay;
 };
