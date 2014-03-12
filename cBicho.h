@@ -38,6 +38,7 @@ public:
 	void GetTile(int *tx,int *ty);
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
+	void SetType(int i);
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
@@ -57,10 +58,15 @@ public:
 	void NextFrame(int max);
 	int  GetFrame();
 	
+	void AI(int *map);
+
 private:
 	int x,y;
 	int w,h;
 	int state;
+	int type;
+
+	int time;
 
 	bool jumping;
 	int jump_alfa;

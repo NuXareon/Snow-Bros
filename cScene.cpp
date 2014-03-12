@@ -73,6 +73,38 @@ bool cScene::LoadLevel(int level)
 	return res;
 }
 
+bool cScene::LoadMonsters(int level) {
+	bool res;
+	FILE *fd;
+	char file[16];
+	int i,j,px,py;
+	int tex;
+	float coordx_tile, coordy_tile;
+
+	res=true;
+
+	if(level<10) sprintf(file,"%s0%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
+	else		 sprintf(file,"%s%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
+
+	fd=fopen(file,"r");
+	if(fd==NULL) return false;
+
+	while(fscanf(fd,"%d",&tex) > 0) // read texture (type of monster)
+	{ 
+		int b1 = fscanf(fd,"%d",&px); // read x position
+		int c1 = fscanf(fd,"%d",&py); // read y position
+
+		cBicho* b = new cBicho();
+		cBicho bb = *b;
+		bb.SetType(tex);
+		bb.SetPosition(SCENE_Xo+px*TILE_SIZE,SCENE_Yo+py*TILE_SIZE);
+		bb.SetWidthHeight(32,32);
+		monsters.push_back(bb);
+	}
+
+	return res;
+}
+
 void cScene::Draw(int tex_id)
 {
 	glEnable(GL_TEXTURE_2D);
@@ -80,7 +112,27 @@ void cScene::Draw(int tex_id)
 	glCallList(id_DL);
 	glDisable(GL_TEXTURE_2D);
 }
+void cScene::DrawMonsters(int tex_id){
+	for (int i = 0; i < monsters.size(); ++i)
+	{
+		monsters[i].DrawRect(tex_id,0.0f,0.25f,0.25f,0.0f);
+	}
+}
 int* cScene::GetMap()
 {
 	return map;
+}
+void cScene::Logic() 
+{
+	for (int i = 0; i < monsters.size(); ++i)
+	{
+		monsters[i].Logic(map);
+	}
+}
+void cScene::AI()
+{
+	for (int i = 0; i < monsters.size(); ++i)
+	{
+		monsters[i].AI(map);
+	}
 }

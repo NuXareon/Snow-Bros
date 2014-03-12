@@ -1,20 +1,20 @@
-﻿Compilación iniciada a las 10/03/2014 20:05:16.
-     1>Proyecto "C:\Users\Joan Marc\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" en el nodo 2 (build destinos).
+﻿Build started 12-Mar-14 13:06:58.
+     1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Se creará "Debug\2DEngine.unsuccessfulbuild" porque se especificó "AlwaysCreate".
+         Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         Todas las salidas están actualizadas.
+         All outputs are up-to-date.
        ManifestResourceCompile:
-         Todas las salidas están actualizadas.
+         All outputs are up-to-date.
        Link:
-         Todas las salidas están actualizadas.
+         All outputs are up-to-date.
        Manifest:
-         Todas las salidas están actualizadas.
+         All outputs are up-to-date.
        FinalizeBuildStatus:
-         Se eliminará el archivo "Debug\2DEngine.unsuccessfulbuild".
-         Aplicando tarea Touch a "Debug\2DEngine.lastbuildstate".
-     1>Compilación del proyecto terminada "C:\Users\Joan Marc\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (build destinos).
+         Deleting file "Debug\2DEngine.unsuccessfulbuild".
+         Touching "Debug\2DEngine.lastbuildstate".
+     1>Done Building Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (build target(s)).
 
-Compilación correcta.
+Build succeeded.
 
-Tiempo transcurrido 00:00:00.10
+Time Elapsed 00:00:00.03

@@ -9,6 +9,8 @@ cBicho::cBicho(void)
 
 	jumping = false;
 	caure = false;
+
+	time = 0;
 }
 cBicho::~cBicho(void){}
 
@@ -48,6 +50,10 @@ void cBicho::GetWidthHeight(int *width,int *height)
 {
 	*width = w;
 	*height = h;
+}
+void cBicho::SetType(int i)
+{
+	type = i;
 }
 bool cBicho::Collides(cRect *rc)
 {
@@ -308,4 +314,10 @@ int cBicho::GetState()
 void cBicho::SetState(int s)
 {
 	state = s;
+}
+void cBicho::AI(int *map)
+{
+	time = (time+1)%100;
+	if(time > 50) MoveLeft(map);
+	else MoveRight(map);
 }

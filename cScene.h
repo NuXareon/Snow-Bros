@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cTexture.h"
+#include "cBicho.h"
+#include <vector>
 
 #define SCENE_Xo		(2*TILE_SIZE)
 #define SCENE_Yo		TILE_SIZE
@@ -8,6 +10,7 @@
 #define SCENE_HEIGHT	28
 
 #define FILENAME		"level"
+#define MONSTER_FILENAME	"monsters"
 #define FILENAME_EXT	".txt"
 
 #define TILE_SIZE		16
@@ -20,10 +23,17 @@ public:
 	virtual ~cScene(void);
 
 	bool LoadLevel(int level);
+	bool LoadMonsters(int level);
 	void Draw(int tex_id);
+	void DrawMonsters(int tex_id);
 	int *GetMap();
+
+	void Logic();
+
+	void AI();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
+	std::vector<cBicho> monsters;			//monster vector for each level
 };

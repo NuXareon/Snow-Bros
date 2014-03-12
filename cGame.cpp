@@ -27,7 +27,11 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"blocks.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(3);
+	res = Scene.LoadLevel(1);
+	if(!res) return false;
+	res = Data.LoadImage(IMG_MONSTER,"bub.png",GL_RGBA);
+	if(!res) return false;
+	res = Scene.LoadMonsters(1);
 	if(!res) return false;
 
 	//Player initialization
@@ -78,9 +82,11 @@ bool cGame::Process()
 	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetMap());
 	else Player.Stop(Scene.GetMap());
 	
+	Scene.AI();
 	
 	//Game Logic
 	Player.Logic(Scene.GetMap());
+	Scene.Logic();
 
 	return res;
 }
@@ -93,6 +99,7 @@ void cGame::Render()
 	glLoadIdentity();
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
+	Scene.DrawMonsters(Data.GetID(IMG_MONSTER));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 
 	glutSwapBuffers();
