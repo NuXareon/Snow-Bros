@@ -97,6 +97,7 @@
     <ClCompile Include="cMonstre.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
+    <ClCompile Include="cShot.cpp" />
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
   </ItemGroup>
@@ -107,6 +108,7 @@
     <ClInclude Include="cMonstre.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cScene.h" />
+    <ClInclude Include="cShot.h" />
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="Globals.h" />
   </ItemGroup>

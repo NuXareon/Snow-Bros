@@ -3,6 +3,7 @@
 #include "cTexture.h"
 #include "cBicho.h"
 #include "cMonstre.h"
+#include "cShot.h"
 #include <vector>
 
 #define SCENE_Xo		(2*TILE_SIZE)
@@ -27,8 +28,10 @@ public:
 
 	bool LoadLevel(int level);
 	bool LoadMonsters(int level);
+	void AddShot(int x, int y, int w, int h, int direction);
 	void Draw(int tex_id);
 	void DrawMonsters(int tex_id);
+	void DrawShots(int tex_id);
 	int *GetMap();
 
 	void Logic();
@@ -39,4 +42,5 @@ private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
 	std::vector<cMonstre> monsters;			//monster vector for each level
+	std::vector<cShot> shots;				//shot vector
 };

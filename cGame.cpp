@@ -68,6 +68,11 @@ void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
 	keys[key] = press;
 }
 
+void cGame::ReadKeyboardSpecial(unsigned char key, int x, int y, bool press)
+{
+	keys[key+SPECIAL_KEY_OFFSET] = press;
+}
+
 void cGame::ReadMouse(int button, int state, int x, int y)
 {
 }
@@ -76,13 +81,18 @@ void cGame::ReadMouse(int button, int state, int x, int y)
 bool cGame::Process()
 {
 	bool res=true;
-	
+	int x,y;
+	int w,h;
+
+	Player.GetPosition(&x,&y);
+
 	//Process Input
 	if(keys[27])	res=false;
 	
-	if(keys[GLUT_KEY_UP])			Player.Jump(Scene.GetMap());
-	if(keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetMap());
-	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetMap());
+	if(keys[GLUT_KEY_UP+SPECIAL_KEY_OFFSET])			Player.Jump(Scene.GetMap());
+	if(keys['z'])										Scene.AddShot(x,y,16,16,0); //test
+	if(keys[GLUT_KEY_LEFT+SPECIAL_KEY_OFFSET])			Player.MoveLeft(Scene.GetMap());
+	else if(keys[GLUT_KEY_RIGHT+SPECIAL_KEY_OFFSET])	Player.MoveRight(Scene.GetMap());
 	else Player.Stop(Scene.GetMap());
 	
 	Scene.AI();
@@ -90,8 +100,8 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap());
 	Scene.Logic();
-	Monstre.Logic(Scene.GetMap());
 
+	// Player-monster collisions (TODO: ficar dincs de cScene.Logic()?)
 	bool collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
 
 	if (collision){
@@ -109,8 +119,8 @@ void cGame::Render()
 	glLoadIdentity();
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
-	Monstre.Draw(Data.GetID(IMG_MONSTER));
 	Scene.DrawMonsters(Data.GetID(IMG_MONSTER));
+	Scene.DrawShots(Data.GetID(IMG_PLAYER));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 
 	glutSwapBuffers();

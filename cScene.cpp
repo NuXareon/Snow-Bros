@@ -143,3 +143,18 @@ void cScene::AI()
 		monsters[i].AI(map);
 	}
 }
+void cScene::AddShot(int x, int y, int w, int h, int dir)
+{
+	cShot* s = new cShot();
+	cShot ss = *s;
+	ss.SetPosition(x,y);
+	ss.SetWidthHeight(w,h);
+	ss.SetDirection(dir);
+	shots.push_back(ss);
+}
+void cScene::DrawShots(int tex_id){
+	for (int i = 0; i < shots.size(); ++i)
+	{
+		shots[i].DrawRect(tex_id,0.0f, 0.125f,0.0f+0.125f, 0.125f-0.125f);
+	}
+}
