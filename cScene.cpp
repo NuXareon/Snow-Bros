@@ -9,6 +9,11 @@ cScene::~cScene(void)
 {
 }
 
+std::vector<cMonstre> cScene::GetMonsters()
+{
+	return monsters;
+}
+
 bool cScene::LoadLevel(int level)
 {
 	bool res;
@@ -94,11 +99,12 @@ bool cScene::LoadMonsters(int level) {
 		int b1 = fscanf(fd,"%d",&px); // read x position
 		int c1 = fscanf(fd,"%d",&py); // read y position
 
-		cBicho* b = new cBicho();
-		cBicho bb = *b;
+		cMonstre* b = new cMonstre();
+		cMonstre bb = *b;
 		bb.SetType(tex);
 		bb.SetPosition(SCENE_Xo+px*TILE_SIZE,SCENE_Yo+py*TILE_SIZE);
 		bb.SetWidthHeight(32,32);
+		bb.SetState(STATE_LOOKRIGHT);
 		monsters.push_back(bb);
 	}
 
@@ -115,13 +121,14 @@ void cScene::Draw(int tex_id)
 void cScene::DrawMonsters(int tex_id){
 	for (int i = 0; i < monsters.size(); ++i)
 	{
-		monsters[i].DrawRect(tex_id,0.0f,0.25f,0.25f,0.0f);
+		monsters[i].Draw(tex_id);
 	}
 }
 int* cScene::GetMap()
 {
 	return map;
 }
+
 void cScene::Logic() 
 {
 	for (int i = 0; i < monsters.size(); ++i)

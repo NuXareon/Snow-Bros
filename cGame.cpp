@@ -29,10 +29,13 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
-	res = Data.LoadImage(IMG_MONSTER,"bub.png",GL_RGBA);
+	res = Data.LoadImage(IMG_MONSTER,"monstres1.png",GL_RGBA);
 	if(!res) return false;
 	res = Scene.LoadMonsters(1);
 	if(!res) return false;
+	//Monstre.SetTile(25,6);
+	//Monstre.SetWidthHeight(32,32);
+	//Monstre.SetState(STATE_LOOKRIGHT);
 
 	//Player initialization
 	res = Data.LoadImage(IMG_PLAYER,"snowbors256.png",GL_RGBA);
@@ -87,6 +90,13 @@ bool cGame::Process()
 	//Game Logic
 	Player.Logic(Scene.GetMap());
 	Scene.Logic();
+	Monstre.Logic(Scene.GetMap());
+
+	bool collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
+
+	if (collision){
+		bool a= true;
+	}
 
 	return res;
 }
@@ -99,6 +109,7 @@ void cGame::Render()
 	glLoadIdentity();
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
+	Monstre.Draw(Data.GetID(IMG_MONSTER));
 	Scene.DrawMonsters(Data.GetID(IMG_MONSTER));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 

@@ -2,6 +2,7 @@
 
 #include "cTexture.h"
 #include "cBicho.h"
+#include "cMonstre.h"
 #include <vector>
 
 #define SCENE_Xo		(2*TILE_SIZE)
@@ -22,6 +23,8 @@ public:
 	cScene(void);
 	virtual ~cScene(void);
 
+	std::vector<cMonstre> GetMonsters();
+
 	bool LoadLevel(int level);
 	bool LoadMonsters(int level);
 	void Draw(int tex_id);
@@ -35,5 +38,5 @@ public:
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int id_DL;								//actual level display list
-	std::vector<cBicho> monsters;			//monster vector for each level
+	std::vector<cMonstre> monsters;			//monster vector for each level
 };

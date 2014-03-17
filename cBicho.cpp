@@ -9,8 +9,6 @@ cBicho::cBicho(void)
 
 	jumping = false;
 	caure = false;
-
-	time = 0;
 }
 cBicho::~cBicho(void){}
 
@@ -314,10 +312,4 @@ int cBicho::GetState()
 void cBicho::SetState(int s)
 {
 	state = s;
-}
-void cBicho::AI(int *map)
-{
-	time = (time+1)%100;
-	if(time > 50) MoveLeft(map);
-	else MoveRight(map);
 }

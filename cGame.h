@@ -2,6 +2,7 @@
 
 #include "cScene.h"
 #include "cPlayer.h"
+#include "cMonstre.h"
 #include "cData.h"
 
 #define GAME_WIDTH	640
@@ -29,5 +30,7 @@ private:
 	unsigned char keys[256];
 	cScene Scene;
 	cPlayer Player;
+	cMonstre Monstre;
 	cData Data;
+	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 };

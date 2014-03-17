@@ -2,6 +2,7 @@
 
 #include "cTexture.h"
 #include "Globals.h"
+#include <vector>
 
 #define FRAME_DELAY		8
 #define STEP_LENGTH		2
@@ -43,6 +44,7 @@ public:
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
 	bool CollidesMapFloor(int *map);
+	
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
@@ -57,16 +59,12 @@ public:
 
 	void NextFrame(int max);
 	int  GetFrame();
-	
-	void AI(int *map);
 
 private:
 	int x,y;
 	int w,h;
 	int state;
-	int type;
-
-	int time;
+	int type;	
 
 	bool jumping;
 	int jump_alfa;
