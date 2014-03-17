@@ -9,13 +9,15 @@
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
 
+// Left
 #define STATE_LOOKLEFT		0
-#define STATE_LOOKRIGHT		1
-#define STATE_WALKLEFT		2
-#define STATE_WALKRIGHT		3
-#define STATE_JUMPINGL		4
-#define STATE_JUMPINGR		5
-#define STATE_CAUREL		6
+#define STATE_WALKLEFT		1
+#define STATE_JUMPINGL		2
+#define STATE_CAUREL		3
+// Right
+#define STATE_LOOKRIGHT		4
+#define STATE_WALKRIGHT		5
+#define STATE_JUMPINGR		6
 #define STATE_CAURER		7
 
 

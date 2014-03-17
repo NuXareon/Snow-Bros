@@ -33,9 +33,6 @@ bool cGame::Init()
 	if(!res) return false;
 	res = Scene.LoadMonsters(1);
 	if(!res) return false;
-	//Monstre.SetTile(25,6);
-	//Monstre.SetWidthHeight(32,32);
-	//Monstre.SetState(STATE_LOOKRIGHT);
 
 	//Player initialization
 	res = Data.LoadImage(IMG_PLAYER,"snowbors256.png",GL_RGBA);
@@ -83,14 +80,20 @@ bool cGame::Process()
 	bool res=true;
 	int x,y;
 	int w,h;
+	int s,dir;
+	w=h=24;
 
 	Player.GetPosition(&x,&y);
+	s = Player.GetState();
+
+	if (s <= STATE_CAUREL) dir = LEFT_DIRECTION;
+	else dir = RIGHT_DIRECTION;
 
 	//Process Input
 	if(keys[27])	res=false;
 	
 	if(keys[GLUT_KEY_UP+SPECIAL_KEY_OFFSET])			Player.Jump(Scene.GetMap());
-	if(keys['z'])										Scene.AddShot(x,y,16,16,0); //test
+	if(keys['z'])										Scene.AddShot(x,y,w,h,dir);
 	if(keys[GLUT_KEY_LEFT+SPECIAL_KEY_OFFSET])			Player.MoveLeft(Scene.GetMap());
 	else if(keys[GLUT_KEY_RIGHT+SPECIAL_KEY_OFFSET])	Player.MoveRight(Scene.GetMap());
 	else Player.Stop(Scene.GetMap());

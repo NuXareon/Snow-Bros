@@ -4,6 +4,7 @@
 
 cShot::cShot(void)
 {
+	ttl = SHOT_TTL;
 }
 cShot::~cShot(void){}
 
@@ -49,4 +50,9 @@ void cShot::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
+}
+bool cShot::Logic()
+{
+	ttl -= 1;
+	return (ttl > 0);
 }

@@ -135,6 +135,11 @@ void cScene::Logic()
 	{
 		monsters[i].Logic(map);
 	}
+	for (int i = 0; i < shots.size(); ++i)
+	{
+		bool res = shots[i].Logic();
+		if (!res) shots.erase(shots.begin()+i);
+	}
 }
 void cScene::AI()
 {

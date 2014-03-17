@@ -9,7 +9,7 @@
 #define SHOT_JUMP_STEP			2
 #define	LEFT_DIRECTION			0
 #define	RIGHT_DIRECTION			1
-
+#define SHOT_TTL				60
 
 class cShot
 {
@@ -25,10 +25,13 @@ public:
 
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
+	bool Logic();	// true = stay alive, false = dead
+
 private:
 
 	int x,y;
 	int w,h;
 	int direction;	
 
+	int ttl;
 };
