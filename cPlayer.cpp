@@ -50,7 +50,8 @@ void cPlayer::Draw(int tex_id)
 bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 {
 	int tile_x,tile_y;
-	int i,j,k;
+	int i,j;
+	unsigned int k;
 	int width_tiles,height_tiles;
 	int xm, ym;
 	int x, y;

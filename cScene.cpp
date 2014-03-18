@@ -16,8 +16,9 @@ std::vector<cMonstre> cScene::GetMonsters()
 
 bool cScene::LoadLevel(int level)
 {
+	errno_t err;
 	bool res;
-	FILE *fd;
+	FILE* fd;
 	char file[16];
 	int i,j,px,py;
 	char tile;
@@ -25,10 +26,10 @@ bool cScene::LoadLevel(int level)
 
 	res=true;
 
-	if(level<10) sprintf(file,"%s0%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
-	else		 sprintf(file,"%s%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
+	if(level<10) sprintf_s(file,"%s0%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
+	else		 sprintf_s(file,"%s%d%s",(char *)FILENAME,level,(char *)FILENAME_EXT);
 
-	fd=fopen(file,"r");
+	err=fopen_s(&fd,file,"r");
 	if(fd==NULL) return false;
 
 	id_DL=glGenLists(1);
@@ -42,7 +43,7 @@ bool cScene::LoadLevel(int level)
 
 				for(i=0;i<SCENE_WIDTH;i++)
 				{
-					fscanf(fd,"%c",&tile);
+					fscanf_s(fd,"%c",&tile);
 					if(tile==' ')
 					{
 						//Tiles must be != 0 !!!
@@ -67,7 +68,7 @@ bool cScene::LoadLevel(int level)
 					}
 					px+=TILE_SIZE;
 				}
-				fscanf(fd,"%c",&tile); //pass enter
+				fscanf_s(fd,"%c",&tile); //pass enter
 			}
 
 		glEnd();
@@ -79,25 +80,25 @@ bool cScene::LoadLevel(int level)
 }
 
 bool cScene::LoadMonsters(int level) {
+	errno_t err;
 	bool res;
 	FILE *fd;
 	char file[16];
-	int i,j,px,py;
+	int px,py;
 	int tex;
-	float coordx_tile, coordy_tile;
 
 	res=true;
 
-	if(level<10) sprintf(file,"%s0%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
-	else		 sprintf(file,"%s%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
+	if(level<10) sprintf_s(file,"%s0%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
+	else		 sprintf_s(file,"%s%d%s",(char *)MONSTER_FILENAME,level,(char *)FILENAME_EXT);
 
-	fd=fopen(file,"r");
+	err=fopen_s(&fd,file,"r");
 	if(fd==NULL) return false;
 
-	while(fscanf(fd,"%d",&tex) > 0) // read texture (type of monster)
+	while(fscanf_s(fd,"%d",&tex) > 0) // read texture (type of monster)
 	{ 
-		int b1 = fscanf(fd,"%d",&px); // read x position
-		int c1 = fscanf(fd,"%d",&py); // read y position
+		int b1 = fscanf_s(fd,"%d",&px); // read x position
+		int c1 = fscanf_s(fd,"%d",&py); // read y position
 
 		cMonstre* b = new cMonstre();
 		cMonstre bb = *b;
@@ -119,7 +120,8 @@ void cScene::Draw(int tex_id)
 	glDisable(GL_TEXTURE_2D);
 }
 void cScene::DrawMonsters(int tex_id){
-	for (int i = 0; i < monsters.size(); ++i)
+	unsigned int i;
+	for (i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].Draw(tex_id);
 	}
@@ -131,11 +133,12 @@ int* cScene::GetMap()
 
 void cScene::Logic() 
 {
-	for (int i = 0; i < monsters.size(); ++i)
+	unsigned int i;
+	for (i=0; i < monsters.size(); ++i)
 	{
 		monsters[i].Logic(map);
 	}
-	for (int i = 0; i < shots.size(); ++i)
+	for (i=0; i < shots.size(); ++i)
 	{
 		bool res = shots[i].Logic();
 		if (!res) shots.erase(shots.begin()+i);
@@ -143,7 +146,8 @@ void cScene::Logic()
 }
 void cScene::AI()
 {
-	for (int i = 0; i < monsters.size(); ++i)
+	unsigned int i;
+	for (i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].AI(map);
 	}
@@ -158,7 +162,8 @@ void cScene::AddShot(int x, int y, int w, int h, int dir)
 	shots.push_back(ss);
 }
 void cScene::DrawShots(int tex_id){
-	for (int i = 0; i < shots.size(); ++i)
+	unsigned int i;
+	for (i = 0; i < shots.size(); ++i)
 	{
 		shots[i].DrawRect(tex_id,0.0f, 0.125f,0.0f+0.125f, 0.125f-0.125f);
 	}
