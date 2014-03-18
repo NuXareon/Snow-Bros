@@ -53,9 +53,10 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 	int i,j;
 	unsigned int k;
 	int width_tiles,height_tiles;
-	int xm, ym;
 	int x, y;
 	int w,h;
+	int xm, ym;
+	int wm,hm;
 	GetWidthHeight(&w,&h);
 	GetPosition(&x,&y);
 
@@ -66,18 +67,16 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 
 	int tile_xr = tile_x + width_tiles;
 	int tile_xl = tile_x;
-	
-	for(i=0;i<width_tiles;i++){
-		for(j=0;j<height_tiles;j++)
+
+	for (i=0; i<monsters.size(); ++i)
+	{
+		monsters[i].GetPosition(&xm,&ym);
+		monsters[i].GetWidthHeight(&wm,&hm);
+		if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
 		{
-			for(k=0;k<monsters.size();k++){
-				monsters[k].GetPosition(&xm,&ym);
-				if((xm/ TILE_SIZE)+i == tile_xl && (ym/ TILE_SIZE)+j == tile_y) return true;
-				if((xm/ TILE_SIZE)+i == tile_xr && (ym/ TILE_SIZE)+j == tile_y) return true;
-			}
+			return true;
 		}
-	}
-	
+	}	
 	return false;
 }
 

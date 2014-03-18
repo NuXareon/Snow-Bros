@@ -81,6 +81,7 @@ bool cGame::Process()
 	int x,y;
 	int w,h;
 	int s,dir;
+	int cd;
 	w=h=24;
 
 	Player.GetPosition(&x,&y);
@@ -89,14 +90,15 @@ bool cGame::Process()
 	if (s <= STATE_CAUREL) dir = LEFT_DIRECTION;
 	else dir = RIGHT_DIRECTION;
 
+	Player.GetShotCd(&cd);
+
 	//Process Input
 	if(keys[27])	res=false;
-	
 	if(keys[GLUT_KEY_UP+SPECIAL_KEY_OFFSET])			Player.Jump(Scene.GetMap());
 	if(keys[GLUT_KEY_LEFT+SPECIAL_KEY_OFFSET])			Player.MoveLeft(Scene.GetMap());
 	else if(keys[GLUT_KEY_RIGHT+SPECIAL_KEY_OFFSET])	Player.MoveRight(Scene.GetMap());
-	else Player.Stop(Scene.GetMap());
-	if(keys['z'] && Player.GetShotCd() == 0) 
+	else												Player.Stop(Scene.GetMap());
+	if(keys['z'] && cd == 0) 
 	{
 		Scene.AddShot(x,y,w,h,dir);
 		Player.SetShotCd(SHOT_CD);

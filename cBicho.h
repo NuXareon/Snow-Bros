@@ -45,7 +45,7 @@ public:
 	void GetWidthHeight(int *w,int *h);
 	void SetType(int i);
 	void SetShotCd(int cd);
-	int GetShotCd();
+	void GetShotCd(int *cd);
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);

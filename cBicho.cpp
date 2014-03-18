@@ -55,11 +55,13 @@ void cBicho::SetType(int i)
 {
 	type = i;
 }
-void cBicho::SetShotCd(int cd){
+void cBicho::SetShotCd(int cd)
+{
 	shot_cd = cd;
 }
-int cBicho::GetShotCd(){
-	return shot_cd;
+void cBicho::GetShotCd(int *cd)
+{
+	*cd = shot_cd;
 }
 bool cBicho::Collides(cRect *rc)
 {

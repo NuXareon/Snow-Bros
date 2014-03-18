@@ -1,10 +1,13 @@
-﻿Build started 18-Mar-14 13:29:23.
+﻿Build started 18-Mar-14 20:51:02.
      1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt cShot.cpp
-         cShot.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt cPlayer.cpp
+         cPlayer.cpp
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(71): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(54): warning C4101: 'k' : unreferenced local variable
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(53): warning C4101: 'j' : unreferenced local variable
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -31,4 +34,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.71
+Time Elapsed 00:00:01.04
