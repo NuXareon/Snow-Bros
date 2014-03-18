@@ -140,7 +140,7 @@ void cScene::Logic()
 	}
 	for (i=0; i < shots.size(); ++i)
 	{
-		bool res = shots[i].Logic();
+		bool res = shots[i].Logic(map);
 		if (!res) shots.erase(shots.begin()+i);
 	}
 }

@@ -20,6 +20,8 @@
 #define STATE_JUMPINGR		6
 #define STATE_CAURER		7
 
+#define SHOT_CD			15
+
 
 class cRect
 {
@@ -42,6 +44,8 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 	void SetType(int i);
+	void SetShotCd(int cd);
+	int GetShotCd();
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
@@ -74,4 +78,6 @@ private:
 	bool caure;
 
 	int seq,delay;
+
+	int shot_cd;
 };

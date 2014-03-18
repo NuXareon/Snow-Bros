@@ -9,6 +9,8 @@ cBicho::cBicho(void)
 
 	jumping = false;
 	caure = false;
+
+	shot_cd = 0;
 }
 cBicho::~cBicho(void){}
 
@@ -52,6 +54,12 @@ void cBicho::GetWidthHeight(int *width,int *height)
 void cBicho::SetType(int i)
 {
 	type = i;
+}
+void cBicho::SetShotCd(int cd){
+	shot_cd = cd;
+}
+int cBicho::GetShotCd(){
+	return shot_cd;
 }
 bool cBicho::Collides(cRect *rc)
 {
@@ -290,6 +298,8 @@ void cBicho::Logic(int *map)
 			caure = true;
 		}else caure = false;
 	}
+
+	if (shot_cd > 0) shot_cd -= 1;
 }
 void cBicho::NextFrame(int max)
 {
