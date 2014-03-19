@@ -10,6 +10,7 @@
 #define	LEFT_DIRECTION			0
 #define	RIGHT_DIRECTION			1
 #define SHOT_TTL				30
+#define SHOT_FALL_STEP			12
 
 class cShot
 {
@@ -27,6 +28,7 @@ public:
 
 	bool MoveRight(int *map);
 	bool MoveLeft(int *map);
+	bool Fall();
 
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 
@@ -39,4 +41,7 @@ private:
 	int direction;	
 
 	int ttl;
+
+	int jump_y;
+	int jump_alfa;
 };

@@ -5,6 +5,7 @@
 cShot::cShot(void)
 {
 	ttl = SHOT_TTL;
+	jump_alfa = 0;
 }
 cShot::~cShot(void){}
 
@@ -12,6 +13,7 @@ void cShot::SetPosition(int posx,int posy)
 {
 	x = posx;
 	y = posy;
+	jump_y = y;
 }
 void cShot::GetPosition(int *posx,int *posy)
 {
@@ -76,8 +78,11 @@ bool cShot::MoveLeft(int *map)
 	//bool collide = false;
 
 	int reduction = 1;
-	if (ttl < SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/2;
-	else if (ttl < 2*SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/4;
+	if (ttl < 2*SHOT_TTL/5) {
+		reduction = 8*SHOT_STEP_LENGTH/10;
+	}
+	else if (ttl < 3*SHOT_TTL/5) reduction = 3*SHOT_STEP_LENGTH/10;
+	else if (ttl < 4*SHOT_TTL/5) reduction = 2*SHOT_STEP_LENGTH/10;
 	
 	//Whats next tile?
 	//if( (x % TILE_SIZE) == 0)
@@ -100,6 +105,7 @@ bool cShot::MoveRight(int *map)
 	int reduction = 1;
 	if (ttl < SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/2;
 	else if (ttl < 2*SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/4;
+	else if (ttl < 3*SHOT_TTL/4) reduction = SHOT_STEP_LENGTH/8;
 
 	//Whats next tile?
 	//if( (x % TILE_SIZE) == 0)
@@ -117,11 +123,38 @@ bool cShot::MoveRight(int *map)
 	//return collide;
 }
 
+bool cShot::Fall(){
+	float alfa;
+
+	jump_alfa += SHOT_FALL_STEP;
+		
+
+	alfa = ((float)jump_alfa) * 0.017453f;
+	y = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /8);
+
+	//if (jump_alfa > 90) {
+		int yaux = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /4);
+		if (yaux < y) y = yaux;
+	//}
+		
+	if(jump_alfa > 270) {
+		int jump_alfa_extra = jump_alfa%270;
+		int jump_alfa_aux = 270;
+		float alfa_extra = ((float)jump_alfa_extra) * 0.017453f;
+		alfa = ((float)jump_alfa_aux) * 0.017453f;
+		int y_extra = (int)( ((float)JUMP_HEIGHT) * sin(alfa_extra) /8);
+		y = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /4) - y_extra;
+	}
+
+	return true;
+}
+
 bool cShot::Logic(int *map)
 {
 	bool collision = false;
 	if (direction == LEFT_DIRECTION) collision = MoveLeft(map);
 	else if (direction == RIGHT_DIRECTION) collision = MoveRight(map);
+	Fall();
 	ttl -= 1;
 	return (ttl > 0 && !collision);
 }
