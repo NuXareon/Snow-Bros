@@ -165,6 +165,21 @@ void cScene::DrawShots(int tex_id){
 	unsigned int i;
 	for (i = 0; i < shots.size(); ++i)
 	{
-		shots[i].DrawRect(tex_id,0.0f, 0.125f,0.0f+0.125f, 0.125f-0.125f);
+		int dir;
+		float xo,yo,xf,yf;
+		shots[i].GetDirection(&dir);
+		if (dir == LEFT_DIRECTION) 
+		{
+			xo=0.5f;
+			yo=0.0f;
+		}
+		else if (dir == RIGHT_DIRECTION) 
+		{
+			xo=0.0f;
+			yo=0.0f;
+		}
+		xf=xo+0.25f;
+		yf=yo+0.25f;
+		shots[i].DrawRect(tex_id,xo,yo,xf,yf);
 	}
 }

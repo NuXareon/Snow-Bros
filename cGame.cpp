@@ -37,6 +37,8 @@ bool cGame::Init()
 	//Player initialization
 	res = Data.LoadImage(IMG_PLAYER,"snowbors256.png",GL_RGBA);
 	if(!res) return false;
+	res = Data.LoadImage(IMG_SHOT,"dispar.png",GL_RGBA);
+	if(!res) return false;
 	//Player.SetWidthHeight(64,64);
 	Player.SetTile(4,1);
 	Player.SetWidthHeight(32,32);
@@ -82,7 +84,7 @@ bool cGame::Process()
 	int w,h;
 	int s,dir;
 	int cd;
-	w=h=24;
+	w=h=18;
 
 	Player.GetPosition(&x,&y);
 	s = Player.GetState();
@@ -129,7 +131,7 @@ void cGame::Render()
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
 	Scene.DrawMonsters(Data.GetID(IMG_MONSTER));
-	Scene.DrawShots(Data.GetID(IMG_PLAYER));
+	Scene.DrawShots(Data.GetID(IMG_SHOT));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 
 	glutSwapBuffers();

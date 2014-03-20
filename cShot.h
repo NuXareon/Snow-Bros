@@ -23,6 +23,7 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 	void SetDirection(int dir);
+	void GetDirection(int *dir);
 
 	bool CollidesMapWall(int *map,bool right);
 
@@ -31,6 +32,7 @@ public:
 	bool Fall();
 
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
+	void Draw(int tex_id);
 
 	bool Logic(int *map);	// true = stay alive, false = dead
 

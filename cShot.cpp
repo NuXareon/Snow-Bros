@@ -34,6 +34,10 @@ void cShot::SetDirection(int dir)
 {
 	direction = dir;
 }
+void cShot::GetDirection(int *dir)
+{
+	*dir = direction;
+}
 void cShot::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
 	int screen_x,screen_y;
@@ -75,8 +79,6 @@ bool cShot::CollidesMapWall(int *map,bool right)
 }
 bool cShot::MoveLeft(int *map)
 {
-	//bool collide = false;
-
 	int reduction = 1;
 	if (ttl < 2*SHOT_TTL/5) {
 		reduction = 8*SHOT_STEP_LENGTH/10;
@@ -84,43 +86,19 @@ bool cShot::MoveLeft(int *map)
 	else if (ttl < 3*SHOT_TTL/5) reduction = 3*SHOT_STEP_LENGTH/10;
 	else if (ttl < 4*SHOT_TTL/5) reduction = 2*SHOT_STEP_LENGTH/10;
 	
-	//Whats next tile?
-	//if( (x % TILE_SIZE) == 0)
-	//{
-		x -= SHOT_STEP_LENGTH/reduction;
-
-		return CollidesMapWall(map,false);
-	//}
-	//Advance, no problem
-	//else
-	//{
-	//	x -= SHOT_STEP_LENGTH;
-	//}
-
-	//return collide;
+	x -= SHOT_STEP_LENGTH/reduction;
+	return CollidesMapWall(map,false);
 }
 bool cShot::MoveRight(int *map)
 {
-	//bool collide = false;
 	int reduction = 1;
 	if (ttl < SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/2;
 	else if (ttl < 2*SHOT_TTL/3) reduction = SHOT_STEP_LENGTH/4;
 	else if (ttl < 3*SHOT_TTL/4) reduction = SHOT_STEP_LENGTH/8;
 
-	//Whats next tile?
-	//if( (x % TILE_SIZE) == 0)
-	//{
-		x += SHOT_STEP_LENGTH/reduction;
-		return CollidesMapWall(map,true);
+	x += SHOT_STEP_LENGTH/reduction;
+	return CollidesMapWall(map,true);
 	
-	//}
-	//Advance, no problem
-	//else
-	//{
-	//	x += SHOT_STEP_LENGTH;
-		
-	//}
-	//return collide;
 }
 
 bool cShot::Fall(){
@@ -132,10 +110,8 @@ bool cShot::Fall(){
 	alfa = ((float)jump_alfa) * 0.017453f;
 	y = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /8);
 
-	//if (jump_alfa > 90) {
-		int yaux = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /4);
-		if (yaux < y) y = yaux;
-	//}
+	int yaux = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) /4);
+	if (yaux < y) y = yaux;
 		
 	if(jump_alfa > 270) {
 		int jump_alfa_extra = jump_alfa%270;
