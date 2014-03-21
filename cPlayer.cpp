@@ -45,9 +45,8 @@ void cPlayer::Draw(int tex_id)
 
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
-
 //a millorar
-bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
+bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters)
 {
 	int tile_x,tile_y;
 	int i,j;

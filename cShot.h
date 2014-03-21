@@ -2,11 +2,13 @@
 
 #include "cTexture.h"
 #include "Globals.h"
+#include "cMonstre.h"
 #include <vector>
 
 #define SHOT_STEP_LENGTH		8
 #define SHOT_JUMP_HEIGHT		32
 #define SHOT_JUMP_STEP			2
+#define SHOT_SIZE				18
 #define	LEFT_DIRECTION			0
 #define	RIGHT_DIRECTION			1
 #define SHOT_TTL				30
@@ -35,6 +37,8 @@ public:
 	void Draw(int tex_id);
 
 	bool Logic(int *map);	// true = stay alive, false = dead
+
+	int CollidesMonstre(std::vector<cMonstre> monsters);
 
 private:
 

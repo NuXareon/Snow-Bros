@@ -84,7 +84,7 @@ bool cGame::Process()
 	int w,h;
 	int s,dir;
 	int cd;
-	w=h=18;
+	w=h=SHOT_SIZE;
 
 	Player.GetPosition(&x,&y);
 	s = Player.GetState();
@@ -113,11 +113,13 @@ bool cGame::Process()
 	Scene.Logic();
 
 	// Player-monster collisions (TODO: ficar dincs de cScene.Logic()?)
-	bool collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
+	bool collision = Player.CollidesMonstre(Scene.GetMonsters());
 
 	if (collision){
 		bool a= true;
 	}
+
+	Scene.ShotCollisions();
 
 	return res;
 }
@@ -130,7 +132,7 @@ void cGame::Render()
 	glLoadIdentity();
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
-	Scene.DrawMonsters(Data.GetID(IMG_MONSTER));
+	Scene.DrawMonsters(Data.GetID(IMG_MONSTER), Data.GetID(IMG_SHOT));
 	Scene.DrawShots(Data.GetID(IMG_SHOT));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 

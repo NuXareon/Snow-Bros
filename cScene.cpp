@@ -119,18 +119,16 @@ void cScene::Draw(int tex_id)
 	glCallList(id_DL);
 	glDisable(GL_TEXTURE_2D);
 }
-void cScene::DrawMonsters(int tex_id){
-	unsigned int i;
-	for (i = 0; i < monsters.size(); ++i)
+void cScene::DrawMonsters(int tex_id, int extra_tex_id){
+	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
-		monsters[i].Draw(tex_id);
+		monsters[i].Draw(tex_id, extra_tex_id);
 	}
 }
 int* cScene::GetMap()
 {
 	return map;
 }
-
 void cScene::Logic() 
 {
 	unsigned int i;
@@ -181,5 +179,17 @@ void cScene::DrawShots(int tex_id){
 		xf=xo+0.25f;
 		yf=yo+0.25f;
 		shots[i].DrawRect(tex_id,xo,yo,xf,yf);
+	}
+}
+void cScene::ShotCollisions()
+{
+	for (unsigned int i = 0; i < shots.size(); ++i)
+	{
+		int m = shots[i].CollidesMonstre(monsters);
+		if (m > -1)
+		{
+			shots.erase(shots.begin()+i);
+			monsters[m].Freeze();
+		}
 	}
 }

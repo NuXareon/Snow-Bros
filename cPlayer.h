@@ -13,5 +13,5 @@ public:
 	~cPlayer();
 
 	void Draw(int tex_id);
-	bool CollidesMonstre(std::vector<cMonstre> monsters,bool right);
+	bool CollidesMonstre(std::vector<cMonstre> monsters);
 };

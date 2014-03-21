@@ -11,8 +11,9 @@ public:
 	cMonstre();
 	~cMonstre();
 
-	void Draw(int tex_id);
+	void Draw(int tex_id, int extra_tex_id);
 	void AI(int *map);
+	void Freeze();
 
 	int time;
 };

@@ -8,6 +8,7 @@
 #define STEP_LENGTH		2
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
+#define SHOT_CD			15
 
 // Left
 #define STATE_LOOKLEFT		0
@@ -19,8 +20,16 @@
 #define STATE_WALKRIGHT		5
 #define STATE_JUMPINGR		6
 #define STATE_CAURER		7
-
-#define SHOT_CD			15
+// Freeze Left
+#define	STATE_FREEZE_L1		8
+#define STATE_FREEZE_L2		9
+#define STATE_FREEZE_L3		10
+#define STATE_FREEZE_L4		11
+// Freeze Right
+#define	STATE_FREEZE_R1		12
+#define STATE_FREEZE_R2		13
+#define STATE_FREEZE_R3		14
+#define STATE_FREEZE_R4		15
 
 
 class cRect

@@ -100,7 +100,6 @@ bool cShot::MoveRight(int *map)
 	return CollidesMapWall(map,true);
 	
 }
-
 bool cShot::Fall(){
 	float alfa;
 
@@ -124,7 +123,6 @@ bool cShot::Fall(){
 
 	return true;
 }
-
 bool cShot::Logic(int *map)
 {
 	bool collision = false;
@@ -133,4 +131,36 @@ bool cShot::Logic(int *map)
 	Fall();
 	ttl -= 1;
 	return (ttl > 0 && !collision);
+}
+int cShot::CollidesMonstre(std::vector<cMonstre> monsters)
+{
+	int tile_x,tile_y;
+	int i,j;
+	unsigned int k;
+	int width_tiles,height_tiles;
+	int x, y;
+	int w,h;
+	int xm, ym;
+	int wm,hm;
+	GetWidthHeight(&w,&h);
+	GetPosition(&x,&y);
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+	width_tiles  = w / TILE_SIZE;
+	height_tiles = h / TILE_SIZE;
+
+	int tile_xr = tile_x + width_tiles;
+	int tile_xl = tile_x;
+
+	for (i=0; i<monsters.size(); ++i)
+	{
+		monsters[i].GetPosition(&xm,&ym);
+		monsters[i].GetWidthHeight(&wm,&hm);
+		if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
+		{
+			return i;
+		}
+	}	
+	return -1;
 }

@@ -30,13 +30,15 @@ public:
 	bool LoadMonsters(int level);
 	void AddShot(int x, int y, int w, int h, int direction);
 	void Draw(int tex_id);
-	void DrawMonsters(int tex_id);
+	void DrawMonsters(int tex_id, int extra_tex_id);
 	void DrawShots(int tex_id);
 	int *GetMap();
 
 	void Logic();
 
 	void AI();
+
+	void ShotCollisions();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
