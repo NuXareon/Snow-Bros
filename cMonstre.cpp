@@ -3,6 +3,8 @@
 
 cMonstre::cMonstre() {
 	time = 0;
+	hp = MONSTER_HP;
+	regen_cd = MONSTER_REGEN_CD;
 }
 cMonstre::~cMonstre(){}
 
@@ -75,12 +77,56 @@ void cMonstre::AI(int *map)
 void cMonstre::Freeze()
 {
 	int state = GetState();
-	if (state <= STATE_CAUREL)
+	if (state <= STATE_CAUREL && hp < MONSTER_HP)
 	{
-		SetState(STATE_FREEZE_L2);
+		SetState(STATE_FREEZE_L1);
 	}
-	else if (state <= STATE_CAURER)
+	else if (state <= STATE_CAURER && hp < MONSTER_HP)
 	{
-		SetState(STATE_FREEZE_R3);
+		SetState(STATE_FREEZE_R1);
+	}
+	else {
+		switch (state)
+		{
+			case STATE_FREEZE_R1:	if (hp < 2*MONSTER_HP/3) SetState(STATE_FREEZE_R2);
+									else if (hp >= MONSTER_HP) SetState(STATE_LOOKRIGHT);
+									break;
+			case STATE_FREEZE_R2:	if (hp < MONSTER_HP/3) SetState(STATE_FREEZE_R3);
+									else if (hp > 2*MONSTER_HP/3) SetState(STATE_FREEZE_R1);
+									break;
+			case STATE_FREEZE_R3:	if (hp <= 0) SetState(STATE_FREEZE_R4);
+									else if (hp > MONSTER_HP/3) SetState(STATE_FREEZE_R2);
+									break;
+			case STATE_FREEZE_R4:	if (hp > 0) SetState(STATE_FREEZE_R3);
+									break;
+			case STATE_FREEZE_L1:	if (hp < 2*MONSTER_HP/3) SetState(STATE_FREEZE_L2);
+									else if (hp >= MONSTER_HP) SetState(STATE_LOOKLEFT);
+									break;
+			case STATE_FREEZE_L2:	if (hp < MONSTER_HP/3) SetState(STATE_FREEZE_L3);
+									else if (hp > 2*MONSTER_HP/3) SetState(STATE_FREEZE_L1);
+									break;
+			case STATE_FREEZE_L3:	if (hp == 0) SetState(STATE_FREEZE_L4);
+									else if (hp > MONSTER_HP/3) SetState(STATE_FREEZE_L2);
+									break;
+			case STATE_FREEZE_L4:	if (hp > 0) SetState(STATE_FREEZE_L3);
+									break;
+		}
+	}
+}
+void cMonstre::DecreaseHP(int x)
+{
+	hp -= x;
+	if (hp < 0) hp = 0;
+	regen_cd = MONSTER_REGEN_CD;
+}
+void cMonstre::Regen()
+{
+	regen_cd -= 1;
+	if (regen_cd == 0)
+	{
+		hp += MONSTER_REGEN_AMOUNT;
+		if (hp > MONSTER_HP) hp = MONSTER_HP;
+		regen_cd = MONSTER_REGEN_CD;
+		Freeze();
 	}
 }

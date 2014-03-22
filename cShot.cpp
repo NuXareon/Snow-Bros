@@ -135,8 +135,7 @@ bool cShot::Logic(int *map)
 int cShot::CollidesMonstre(std::vector<cMonstre> monsters)
 {
 	int tile_x,tile_y;
-	int i,j;
-	unsigned int k;
+	unsigned int i;
 	int width_tiles,height_tiles;
 	int x, y;
 	int w,h;

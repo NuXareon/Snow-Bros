@@ -13,6 +13,7 @@
 #define	RIGHT_DIRECTION			1
 #define SHOT_TTL				30
 #define SHOT_FALL_STEP			12
+#define SHOT_DAMAGE				10
 
 class cShot
 {

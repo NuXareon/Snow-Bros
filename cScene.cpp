@@ -135,6 +135,7 @@ void cScene::Logic()
 	for (i=0; i < monsters.size(); ++i)
 	{
 		monsters[i].Logic(map);
+		monsters[i].Regen();
 	}
 	for (i=0; i < shots.size(); ++i)
 	{
@@ -189,7 +190,9 @@ void cScene::ShotCollisions()
 		if (m > -1)
 		{
 			shots.erase(shots.begin()+i);
+			monsters[m].DecreaseHP(SHOT_DAMAGE);
 			monsters[m].Freeze();
+			int a = 1;
 		}
 	}
 }
