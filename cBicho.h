@@ -8,7 +8,7 @@
 #define STEP_LENGTH		2
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
-#define SHOT_CD			15
+#define SHOT_CD			12
 
 // Left
 #define STATE_LOOKLEFT		0

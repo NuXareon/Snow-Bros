@@ -5,8 +5,8 @@
 #define MONSTRE_START_CX		3
 #define MONSTRE_START_CY		2
 #define MONSTER_HP				100
-#define MONSTER_REGEN_CD		60
-#define MONSTER_REGEN_AMOUNT	5
+#define MONSTER_REGEN_CD		30
+#define MONSTER_REGEN_AMOUNT	10
 
 class cMonstre: public cBicho
 {

@@ -1,19 +1,17 @@
-﻿Build started 22/03/2014 18:30:55.
-     1>Project "C:\Users\nuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (rebuild target(s)).
-     1>_PrepareForClean:
-         Deleting file "Debug\2DEngine.lastbuildstate".
-       InitializeBuildStatus:
+﻿Build started 23-Mar-14 23:47:15.
+     1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
          Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt cBicho.cpp cData.cpp cGame.cpp cMonstre.cpp cPlayer.cpp cScene.cpp cShot.cpp cTexture.cpp GLUTMain.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GLUTMain.cpp cBicho.cpp cGame.cpp cMonstre.cpp cPlayer.cpp cScene.cpp cShot.cpp
          GLUTMain.cpp
-         cTexture.cpp
+         Generating Code...
+         Compiling...
          cShot.cpp
          cScene.cpp
          cPlayer.cpp
          cMonstre.cpp
          cGame.cpp
-         cData.cpp
          cBicho.cpp
          Generating Code...
        Link:
@@ -27,14 +25,14 @@
          Debug\cTexture.obj
          Debug\GLUTMain.obj
      1>cBicho.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-         2DEngine.vcxproj -> C:\Users\nuXe\Documents\GitHub\Snow-Bros\Debug\2DEngine.exe
+         2DEngine.vcxproj -> C:\Users\NuXe\Documents\GitHub\Snow-Bros\Debug\2DEngine.exe
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"Debug\2DEngine.exe;#1" /manifest Debug\2DEngine.exe.intermediate.manifest
        FinalizeBuildStatus:
          Deleting file "Debug\2DEngine.unsuccessfulbuild".
          Touching "Debug\2DEngine.lastbuildstate".
-     1>Done Building Project "C:\Users\nuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (rebuild target(s)).
+     1>Done Building Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:10.81
+Time Elapsed 00:00:03.21
