@@ -8,7 +8,6 @@
 #define STEP_LENGTH		2
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
-#define SHOT_CD			12
 
 // Left
 #define STATE_LOOKLEFT		0
@@ -32,6 +31,14 @@
 #define STATE_FREEZE_R4		15
 
 
+#define STATE_DEATH			16
+
+#define STATE_ATACL			17
+#define STATE_ATACR			18
+
+#define SHOT_CD			15
+
+
 class cRect
 {
 public:
@@ -53,6 +60,7 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 	void SetType(int i);
+	void GetType(int *i);
 	void SetShotCd(int cd);
 	void GetShotCd(int *cd);
 

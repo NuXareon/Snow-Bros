@@ -3,7 +3,12 @@
 #include "cMonstre.h"
 #include "cScene.h"
 
-cPlayer::cPlayer() {}
+cPlayer::cPlayer() {
+	mort = false;
+	death = false;
+	vida = 3;
+	death_cd = PLAYER_DEATH_CD;
+}
 cPlayer::~cPlayer(){}
 
 void cPlayer::Draw(int tex_id)
@@ -34,10 +39,21 @@ void cPlayer::Draw(int tex_id)
 								NextFrame(5);
 								break;
 		case STATE_CAUREL:		xo = 0.0f; yo = 0.25f;
-								NextFrame(5);
 								break;
 		case STATE_CAURER:		xo = 0.0f; yo = 0.375f;
-								NextFrame(5);
+								break;
+		case STATE_DEATH:		xo = 0.0f + (GetFrame()*0.125f); yo = 0.875f;								
+								if(6 == GetFrame())	death = true;
+								NextFrame(7);
+								break;
+		case STATE_ATACL:		xo = 0.25f; yo = 0.5f;
+								if(GetFrame() == 2) SetState(STATE_LOOKLEFT);
+								NextFrame(3);
+								break;
+		case STATE_ATACR:		xo = 0.25f; yo = 0.625f;
+								NextFrame(3);
+								if(GetFrame() == 2) SetState(STATE_LOOKRIGHT);
+								NextFrame(3);
 								break;
 	}
 	xf = xo + 0.125f;
@@ -45,11 +61,12 @@ void cPlayer::Draw(int tex_id)
 
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
+
 //a millorar
-bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters)
+bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 {
 	int tile_x,tile_y;
-	unsigned int i;
+	int i;
 	int width_tiles,height_tiles;
 	int x, y;
 	int w,h;
@@ -78,3 +95,28 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters)
 	return false;
 }
 
+void cPlayer::Death(){
+
+	if(death) {
+		SetTile(2,6);
+		mort = false;
+		death = false;
+		vida--;
+		SetState(STATE_LOOKRIGHT);
+	}
+}
+
+
+void cPlayer::SetMort(bool x){
+	mort = x;
+}
+void cPlayer::GetMort(bool *x){
+	*x = mort;
+}
+
+void cPlayer::GetVida(int *x){
+	*x = vida;
+}
+void cPlayer::GetDeath(bool *x){
+	*x = death;
+}

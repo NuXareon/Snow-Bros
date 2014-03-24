@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cBicho.h"
+#include <stdlib.h>
+#include <time.h>
 
 #define MONSTRE_START_CX		3
 #define MONSTRE_START_CY		2
@@ -20,8 +22,9 @@ public:
 	void DecreaseHP(int x);
 	void Regen();
 
-private:
 	int regen_cd;
-	int hp;
 	int time;
+	bool atac;
+	int tini;
+	int hp;
 };

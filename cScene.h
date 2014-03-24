@@ -37,7 +37,6 @@ public:
 	void Logic();
 
 	void AI();
-
 	void ShotCollisions();
 
 private:

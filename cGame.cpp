@@ -4,6 +4,9 @@
 
 cGame::cGame(void)
 {
+	mortPlayer = false;
+	punts = 0;
+	maxPunts = 0;
 }
 
 cGame::~cGame(void)
@@ -25,11 +28,11 @@ bool cGame::Init()
 	glEnable(GL_ALPHA_TEST);
 
 	//Scene initialization
-	res = Data.LoadImage(IMG_BLOCKS,"blocks.png",GL_RGBA);
+	res = Data.LoadImage(IMG_BLOCKS,"blocksSB.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(1);
+	res = Scene.LoadLevel(8);
 	if(!res) return false;
-	res = Data.LoadImage(IMG_MONSTER,"monstres1.png",GL_RGBA);
+	res = Data.LoadImage(IMG_MONSTER,"monstres12.png",GL_RGBA);
 	if(!res) return false;
 	res = Scene.LoadMonsters(1);
 	if(!res) return false;
@@ -40,7 +43,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_SHOT,"dispar.png",GL_RGBA);
 	if(!res) return false;
 	//Player.SetWidthHeight(64,64);
-	Player.SetTile(4,1);
+	Player.SetTile(2,1);
 	Player.SetWidthHeight(32,32);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -84,6 +87,7 @@ bool cGame::Process()
 	int w,h;
 	int s,dir;
 	int cd;
+	int vida;
 	w=h=SHOT_SIZE;
 
 	Player.GetPosition(&x,&y);
@@ -95,17 +99,23 @@ bool cGame::Process()
 	Player.GetShotCd(&cd);
 
 	//Process Input
-	if(keys[27])	res=false;
-	if(keys[GLUT_KEY_UP+SPECIAL_KEY_OFFSET])			Player.Jump(Scene.GetMap());
-	if(keys[GLUT_KEY_LEFT+SPECIAL_KEY_OFFSET])			Player.MoveLeft(Scene.GetMap());
-	else if(keys[GLUT_KEY_RIGHT+SPECIAL_KEY_OFFSET])	Player.MoveRight(Scene.GetMap());
-	else												Player.Stop(Scene.GetMap());
-	if(keys['z'] && cd == 0) 
-	{
-		Scene.AddShot(x,y,w,h,dir);
-		Player.SetShotCd(SHOT_CD);
-	}
+	bool mortP;
+	Player.GetMort(&mortP);
 	
+	if(keys[27])	res=false;
+	if(!mortP){ //esta viu??
+		if(keys[GLUT_KEY_UP+SPECIAL_KEY_OFFSET])			Player.Jump(Scene.GetMap());
+		if(keys[GLUT_KEY_LEFT+SPECIAL_KEY_OFFSET])			Player.MoveLeft(Scene.GetMap());
+		else if(keys[GLUT_KEY_RIGHT+SPECIAL_KEY_OFFSET])	Player.MoveRight(Scene.GetMap());
+		else												Player.Stop(Scene.GetMap());
+		if(keys['z'] && cd == 0) 
+		{
+			Scene.AddShot(x,y,w,h,dir);
+			Player.SetShotCd(SHOT_CD);
+			if(dir == LEFT_DIRECTION) Player.SetState(STATE_ATACL);
+			else if(dir == RIGHT_DIRECTION)  Player.SetState(STATE_ATACR);
+		}
+	}
 	Scene.AI();
 	
 	//Game Logic
@@ -113,13 +123,20 @@ bool cGame::Process()
 	Scene.Logic();
 
 	// Player-monster collisions (TODO: ficar dincs de cScene.Logic()?)
-	bool collision = Player.CollidesMonstre(Scene.GetMonsters());
+	bool collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
 
 	if (collision){
-		bool a= true;
+		Player.SetMort(true);
+		Player.SetState(STATE_DEATH);		
 	}
+	bool pd;
+	Player.GetDeath(&pd);
+	if(pd) Player.Death();
 
 	Scene.ShotCollisions();
+
+	Player.GetVida(&vida);
+	if(vida == 0) Scene.LoadLevel(2); 
 
 	return res;
 }
@@ -136,5 +153,49 @@ void cGame::Render()
 	Scene.DrawShots(Data.GetID(IMG_SHOT));
 	Player.Draw(Data.GetID(IMG_PLAYER));
 
+	render_info();
+
 	glutSwapBuffers();
+}
+
+
+// Render a string
+void cGame::render_string(void* font, const char* string)
+{
+	int i,len = strlen(string);
+	for(i=0;i<len;i++)
+		glutBitmapCharacter(font, string[i]);
+}
+
+
+// Render information
+void cGame::render_info()
+{
+	int fx,vida;
+	char buffvida[10], buffpunts[10],buffmaxPunts[10];
+	Player.GetVida(&vida);
+	itoa(vida,buffvida,10 );
+	itoa(punts,buffpunts,10 );
+	itoa(maxPunts,buffmaxPunts,10 );
+	char *s[]={	"Vida: ", buffvida,
+				"Punts: ", buffpunts,
+				"Maxima puntuacio: ", buffmaxPunts
+			  };
+	
+	glDisable(GL_TEXTURE_2D);
+		glRasterPos2f(GAME_WIDTH/4,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[0]);
+		glRasterPos2f(GAME_WIDTH/4 + 30,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[1]);
+
+		glRasterPos2f(GAME_WIDTH/4 + 100,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[2]);
+		glRasterPos2f(GAME_WIDTH/4 + 140,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[3]);
+
+		glRasterPos2f(GAME_WIDTH/4 + 200,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[4]);
+		glRasterPos2f(GAME_WIDTH/4 + 290,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[5]);
+	glEnable(GL_TEXTURE_2D);
 }

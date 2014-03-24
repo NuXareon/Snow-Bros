@@ -55,6 +55,10 @@ void cBicho::SetType(int i)
 {
 	type = i;
 }
+void cBicho::GetType(int *i)
+{
+	*i = type;
+}
 void cBicho::SetShotCd(int cd)
 {
 	shot_cd = cd;
@@ -107,12 +111,14 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if( (y % TILE_SIZE) == 0 )
 		{
-			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 1 ||
+				map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 2)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 1 ||
+				map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 2)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;

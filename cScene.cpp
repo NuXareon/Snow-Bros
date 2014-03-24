@@ -100,6 +100,8 @@ bool cScene::LoadMonsters(int level) {
 		int b1 = fscanf_s(fd,"%d",&px); // read x position
 		int c1 = fscanf_s(fd,"%d",&py); // read y position
 
+		
+
 		cMonstre* b = new cMonstre();
 		cMonstre bb = *b;
 		bb.SetType(tex);
@@ -120,7 +122,8 @@ void cScene::Draw(int tex_id)
 	glDisable(GL_TEXTURE_2D);
 }
 void cScene::DrawMonsters(int tex_id, int extra_tex_id){
-	for (unsigned int i = 0; i < monsters.size(); ++i)
+	unsigned int i;
+	for (i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].Draw(tex_id, extra_tex_id);
 	}
@@ -129,6 +132,7 @@ int* cScene::GetMap()
 {
 	return map;
 }
+
 void cScene::Logic() 
 {
 	unsigned int i;
@@ -192,7 +196,6 @@ void cScene::ShotCollisions()
 			shots.erase(shots.begin()+i);
 			monsters[m].DecreaseHP(SHOT_DAMAGE);
 			monsters[m].Freeze();
-			int a = 1;
 		}
 	}
 }

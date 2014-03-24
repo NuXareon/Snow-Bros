@@ -5,6 +5,9 @@
 #include "cMonstre.h"
 #include "cData.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define SPECIAL_KEY_OFFSET 100 //Offset que sumem a les tecles especial (fletxes, F1, etc...) per evitar solapament amb caracters ASCII
 
 #define GAME_WIDTH	640
@@ -28,11 +31,18 @@ public:
 	bool Process();
 	//Output
 	void Render();
-
+	void render_string(void* font, const char* string);
+	void render_info();
+	
 private:
 	unsigned char keys[256];
 	cScene Scene;
 	cPlayer Player;
 	cData Data;
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
+	bool mortPlayer;
+	int punts;
+	int maxPunts;
 };
+
+
