@@ -122,18 +122,36 @@ bool cGame::Process()
 	Player.Logic(Scene.GetMap());
 	Scene.Logic();
 
-	// Player-monster collisions (TODO: ficar dincs de cScene.Logic()?)
-	bool collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
+	bool collision = Player.CollidesMonstre(Scene.GetMonsters());
 
 	if (collision){
 		Player.SetMort(true);
 		Player.SetState(STATE_DEATH);		
 	}
+
 	bool pd;
 	Player.GetDeath(&pd);
 	if(pd) Player.Death();
 
-	Scene.ShotCollisions();
+	std::vector<int> shot_collisions;
+	Scene.ShotCollisions(&shot_collisions);
+
+	if (shot_collisions.size() > 0)
+	{
+		for (unsigned int i = 0; i < shot_collisions.size(); ++i)
+		{
+			bool ps_collision = Player.CollidesMonstre(Scene.GetMonsters(shot_collisions[i]), false);
+			int b = 4;
+			if (ps_collision) 
+			{
+				//cMonstre* monster = Scene.GetMonsters(shot_collisions[i]);
+				int pstate = Player.GetState();
+				bool roll_direction_left = ((pstate <= STATE_CAUREL && pstate >= STATE_LOOKLEFT) || pstate == STATE_ATACL);
+				Scene.Roll(shot_collisions[i], roll_direction_left);
+				int a = 3;
+			}
+		}
+	}
 
 	Player.GetVida(&vida);
 	if(vida == 0) Scene.LoadLevel(2); 

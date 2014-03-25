@@ -217,6 +217,69 @@ void cBicho::MoveRight(int *map)
 		
 	}
 }
+void cBicho::RollLeft(int *map)
+{
+	int xaux;
+	
+	//Whats next tile?
+	if( (x % TILE_SIZE) == 0)
+	{
+		xaux = x;
+		x -= ROLL_STEP;
+
+		if(CollidesMapWall(map,false) )
+		{
+			x = xaux;
+			//if(!caure && !jumping)state = STATE_LOOKLEFT;
+			//else if(caure) state = STATE_CAUREL;
+		}
+	}
+	//Advance, no problem
+	else
+	{
+		x -= STEP_LENGTH;
+		/*
+		if(caure && !jumping) state = STATE_CAUREL;
+		else if(state != STATE_WALKLEFT && !jumping)
+		{
+			state = STATE_WALKLEFT;
+			seq = 0;
+			delay = 0;
+		}
+		*/
+	}
+}
+void cBicho::RollRight(int *map)
+{
+	int xaux;
+
+	//Whats next tile?
+	if( (x % TILE_SIZE) == 0)
+	{
+		xaux = x;
+		x += ROLL_STEP;
+		if(CollidesMapWall(map,true))
+		{
+			x = xaux;
+			//if(!caure && !jumping)state = STATE_LOOKRIGHT;
+			//else if(caure) state = STATE_CAURER;
+		}
+	}
+	//Advance, no problem
+	else
+	{
+		x += STEP_LENGTH;
+		/*
+		if(caure && !jumping) state = STATE_CAURER;
+		else if(state != STATE_WALKRIGHT && !jumping)
+		{
+			state = STATE_WALKRIGHT;
+			seq = 0;
+			delay = 0;
+		}
+		*/
+	}
+}
 void cBicho::Stop(int *map)
 {
 	if(caure){ //caure

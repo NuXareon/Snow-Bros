@@ -21,7 +21,9 @@ public:
 	void Freeze();
 	void DecreaseHP(int x);
 	void Regen();
+	void Roll(bool left);
 
+private:
 	int regen_cd;
 	int time;
 	bool atac;

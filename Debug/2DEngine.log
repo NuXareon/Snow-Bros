@@ -1,12 +1,31 @@
-﻿Build started 24/03/2014 10:55:19.
-     1>Project "F:\windows\Snow-Bros-master\2DEngine.vcxproj" on node 2 (build target(s)).
+﻿Build started 25-Mar-14 14:09:13.
+     1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GLUTMain.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GLUTMain.cpp cBicho.cpp cGame.cpp cMonstre.cpp cPlayer.cpp cScene.cpp cShot.cpp
          GLUTMain.cpp
+         Generating Code...
+         Compiling...
+         cShot.cpp
+         cScene.cpp
+         cPlayer.cpp
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(85): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(101): warning C4101: 'i' : unreferenced local variable
+         cMonstre.cpp
+     1>c:\users\nuxe\documents\github\snow-bros\cmonstre.cpp(92): warning C4101: 'tfi' : unreferenced local variable
+         cGame.cpp
+     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(195): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
+     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(196): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
+     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(197): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
+     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(192): warning C4101: 'fx' : unreferenced local variable
+         cBicho.cpp
+         Generating Code...
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\2DEngine.exe.embed.manifest.res" Debug\2DEngine_manifest.rc 
+         All outputs are up-to-date.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\2DEngine.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\2DEngine.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Debug\2DEngine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\2DEngine.lib" /MACHINE:X86 Debug\2DEngine.exe.embed.manifest.res
          Debug\cBicho.obj
@@ -20,24 +39,15 @@
          Debug\GLUTMain.obj
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\2DEngine.exe.embed.manifest" /manifest Debug\2DEngine.exe.intermediate.manifest
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\2DEngine.exe.embed.manifest.res" Debug\2DEngine_manifest.rc 
+         All outputs are up-to-date.
        LinkEmbedManifest:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\2DEngine.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\2DEngine.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Debug\2DEngine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\2DEngine.lib" /MACHINE:X86 Debug\2DEngine.exe.embed.manifest.res
-         Debug\cBicho.obj
-         Debug\cData.obj
-         Debug\cGame.obj
-         Debug\cMonstre.obj
-         Debug\cPlayer.obj
-         Debug\cScene.obj
-         Debug\cShot.obj
-         Debug\cTexture.obj
-         Debug\GLUTMain.obj
-         2DEngine.vcxproj -> F:\windows\Snow-Bros-master\Debug\2DEngine.exe
+         All outputs are up-to-date.
+         2DEngine.vcxproj -> C:\Users\NuXe\Documents\GitHub\Snow-Bros\Debug\2DEngine.exe
        FinalizeBuildStatus:
          Deleting file "Debug\2DEngine.unsuccessfulbuild".
          Touching "Debug\2DEngine.lastbuildstate".
-     1>Done Building Project "F:\windows\Snow-Bros-master\2DEngine.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.46
+Time Elapsed 00:00:02.99

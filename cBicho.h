@@ -6,6 +6,7 @@
 
 #define FRAME_DELAY		8
 #define STEP_LENGTH		2
+#define ROLL_STEP		12
 #define JUMP_HEIGHT		96
 #define JUMP_STEP		4
 
@@ -35,6 +36,9 @@
 
 #define STATE_ATACL			17
 #define STATE_ATACR			18
+
+#define STATE_ROLLINGL		19
+#define STATE_ROLLINGR		20
 
 #define SHOT_CD			15
 
@@ -73,6 +77,8 @@ public:
 
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
+	void RollLeft(int *map);
+	void RollRight(int *map);
 	void Jump(int *map);
 	void Stop(int *map);
 	void Logic(int *map);

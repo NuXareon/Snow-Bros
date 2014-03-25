@@ -14,6 +14,11 @@ std::vector<cMonstre> cScene::GetMonsters()
 	return monsters;
 }
 
+cMonstre cScene::GetMonsters(int i)
+{
+	return monsters[i];
+}
+
 bool cScene::LoadLevel(int level)
 {
 	errno_t err;
@@ -186,7 +191,7 @@ void cScene::DrawShots(int tex_id){
 		shots[i].DrawRect(tex_id,xo,yo,xf,yf);
 	}
 }
-void cScene::ShotCollisions()
+void cScene::ShotCollisions(std::vector<int>* coll)
 {
 	for (unsigned int i = 0; i < shots.size(); ++i)
 	{
@@ -194,8 +199,20 @@ void cScene::ShotCollisions()
 		if (m > -1)
 		{
 			shots.erase(shots.begin()+i);
+			int state = monsters[m].GetState();
+			if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4)
+			{
+				(*coll).push_back(m);
+				// distancia player-monster < n
+				// monster.setX(rolling)
+				// monster.roll(left)
+			}
 			monsters[m].DecreaseHP(SHOT_DAMAGE);
 			monsters[m].Freeze();
 		}
 	}
+}
+void cScene::Roll(int i, bool left)
+{
+	monsters[i].Roll(left);
 }

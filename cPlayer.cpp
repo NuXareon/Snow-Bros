@@ -62,8 +62,7 @@ void cPlayer::Draw(int tex_id)
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
 
-//a millorar
-bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
+bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters, bool state_freeze)
 {
 	int tile_x,tile_y;
 	int i;
@@ -87,11 +86,45 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 	{
 		monsters[i].GetPosition(&xm,&ym);
 		monsters[i].GetWidthHeight(&wm,&hm);
-		if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
+		int mstate = monsters[i].GetState();
+		if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2))
 		{
-			return true;
+			return (!state_freeze || (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)));
 		}
 	}	
+	return false;
+}
+
+bool cPlayer::CollidesMonstre(cMonstre monster, bool state_freeze)
+{
+	int tile_x,tile_y;
+	int i;
+	int width_tiles,height_tiles;
+	int x, y;
+	int w,h;
+	int xm, ym;
+	int wm,hm;
+	GetWidthHeight(&w,&h);
+	GetPosition(&x,&y);
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+	width_tiles  = w / TILE_SIZE;
+	height_tiles = h / TILE_SIZE;
+
+	int tile_xr = tile_x + width_tiles;
+	int tile_xl = tile_x;
+
+	monster.GetPosition(&xm,&ym);
+	monster.GetWidthHeight(&wm,&hm);
+	int mstate = monster.GetState();
+	if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2))
+	{
+		//if (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4)) return true;
+		//else if (!state_freeze) return true;
+		return (!state_freeze || (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)));
+	}
+
 	return false;
 }
 

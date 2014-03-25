@@ -25,6 +25,7 @@ public:
 	virtual ~cScene(void);
 
 	std::vector<cMonstre> GetMonsters();
+	cMonstre GetMonsters(int i);
 
 	bool LoadLevel(int level);
 	bool LoadMonsters(int level);
@@ -37,7 +38,9 @@ public:
 	void Logic();
 
 	void AI();
-	void ShotCollisions();
+	void ShotCollisions(std::vector<int>* coll);
+
+	void Roll(int i, bool left);
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene

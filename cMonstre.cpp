@@ -55,12 +55,12 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 								break;
 
 		default:				// Frozen!
-								if (state >= STATE_FREEZE_L1 && state <= STATE_FREEZE_L4)
+								if (state >= STATE_FREEZE_L1 && state <= STATE_FREEZE_L4 || state == STATE_ROLLINGL)
 								{
 									xo = 0.0f+(GetFrame()*0.125f); yo = 0.375f+t;
 									NextFrame(2);
 								}
-								else if (state >= STATE_FREEZE_R1 && state <= STATE_FREEZE_R4)
+								else if (state >= STATE_FREEZE_R1 && state <= STATE_FREEZE_R4 || state == STATE_ROLLINGR)
 								{
 									xo = 0.0f+(GetFrame()*0.125f); yo = 0.5f+t;
 									NextFrame(2);
@@ -72,12 +72,12 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 
 	DrawRect(tex_id,xo,yo,xf,yf);
 
-	if (state >= STATE_FREEZE_L1 && state <= STATE_FREEZE_R4)
+	if (state >= STATE_FREEZE_L1 && state <= STATE_FREEZE_R4 || state == STATE_ROLLINGL || state == STATE_ROLLINGR)
 	{
 		if (state == STATE_FREEZE_L1 || state == STATE_FREEZE_R1) xo = 0.0f; yo = 0.75f;
 		if (state == STATE_FREEZE_L2 || state == STATE_FREEZE_R2) xo = 0.25f; yo = 0.75f;
 		if (state == STATE_FREEZE_L3 || state == STATE_FREEZE_R3) xo = 0.50f; yo = 0.75f;
-		if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4) xo = 0.75f; yo = 0.75f;
+		if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4 || state == STATE_ROLLINGL || state == STATE_ROLLINGR) xo = 0.75f; yo = 0.75f;
 
 		xf = xo + 0.25f;
 		yf = yo - 0.25f;
@@ -91,7 +91,7 @@ void cMonstre::AI(int *map)
 	int x = rand()%100;
 	int tipus,tfi;
 	GetType(&tipus);
-	if (GetState() < STATE_FREEZE_L1 || GetState() > STATE_FREEZE_R4) {
+	if ((GetState() < STATE_FREEZE_L1 || GetState() > STATE_FREEZE_R4) && GetState() != STATE_ROLLINGL && GetState() != STATE_ROLLINGR) {
 		if(x<2 && tipus==2) {
 			if(GetState() == STATE_WALKLEFT){
 				atac = true;
@@ -108,6 +108,8 @@ void cMonstre::AI(int *map)
 			else MoveRight(map);
 		}
 	}
+	else if (GetState() == STATE_ROLLINGL) RollLeft(map);
+	else if (GetState() == STATE_ROLLINGR) RollRight(map);
 }
 void cMonstre::Freeze()
 {
@@ -151,8 +153,11 @@ void cMonstre::Freeze()
 void cMonstre::DecreaseHP(int x)
 {
 	hp -= x;
-	if (hp < 0) hp = 0;
-	regen_cd = MONSTER_REGEN_CD;
+	if (hp < 0) {
+		hp = 0;
+		regen_cd = 10*MONSTER_REGEN_CD;
+	}
+	else regen_cd = MONSTER_REGEN_CD;
 }
 void cMonstre::Regen()
 {
@@ -164,4 +169,9 @@ void cMonstre::Regen()
 		regen_cd = MONSTER_REGEN_CD;
 		Freeze();
 	}
+}
+void cMonstre::Roll(bool left)
+{
+	if (left) SetState(STATE_ROLLINGL);
+	else SetState(STATE_ROLLINGR);
 }
