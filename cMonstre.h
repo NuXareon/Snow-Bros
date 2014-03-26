@@ -3,7 +3,6 @@
 #include "cBicho.h"
 #include <stdlib.h>
 #include <time.h>
-#include <set>
 
 #define MONSTRE_START_CX		3
 #define MONSTRE_START_CY		2

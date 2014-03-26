@@ -127,6 +127,47 @@ void cScene::Draw(int tex_id)
 	glCallList(id_DL);
 	glDisable(GL_TEXTURE_2D);
 }
+void cScene::DrawItems(int tex_id)
+{
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D,tex_id);
+	for (unsigned int i = 0; i < items.size(); ++i)
+	{
+		int type = items[i].first;
+		float xo,yo;
+
+		switch (type)
+		{
+			case 5: xo = 0.0f; yo = 1.0f;
+					break;
+			case 6: xo = 0.125f; yo = 1.0f;
+					break;
+		}
+
+		float xf,yf;
+		xf = xo+0.125f; yf = yo-0.125f;
+
+		int x,y;
+		x = items[i].second.first;
+		y = items[i].second.second; 
+
+		int screen_x,screen_y;
+		screen_x = x + SCENE_Xo;
+		screen_y = y + SCENE_Yo + (BLOCK_SIZE - TILE_SIZE);
+
+		int w,h;
+		w=h=TILE_SIZE;
+
+		glBegin(GL_QUADS);	
+			glTexCoord2f(xo,yo);	glVertex2i(screen_x  ,screen_y);
+			glTexCoord2f(xf,yo);	glVertex2i(screen_x+w,screen_y);
+			glTexCoord2f(xf,yf);	glVertex2i(screen_x+w,screen_y+h);
+			glTexCoord2f(xo,yf);	glVertex2i(screen_x  ,screen_y+h);
+		glEnd();
+
+	}
+	glDisable(GL_TEXTURE_2D);
+}
 void cScene::DrawMonsters(int tex_id, int extra_tex_id)
 {
 	for (unsigned int i = 0; i < monsters.size(); ++i)
@@ -223,6 +264,41 @@ void cScene::RollingCollisions()
 	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
 		if (monsters[i].GetState() == STATE_ROLLINGR || monsters[i].GetState() == STATE_ROLLINGL) monsters[i].RollingCollisions(&monsters);
+		if (monsters[i].GetRollCollision()) DropItem(monsters[i]);
 	}
 	monsters.erase(std::remove_if(monsters.begin(), monsters.end(),RemoveRollingCondition),monsters.end());
+}
+void cScene::DropItem(cMonstre m)
+{
+	int type;
+	m.GetType(&type);
+	switch(type)
+	{
+		case 1: DropSpeed(m);
+				break;
+		case 2: DropPowerShot(m);
+				break;
+	}
+}
+void cScene::DropSpeed(cMonstre m)
+{
+	int chance = rand()%100;
+	if (chance<DROP_SPEED_RATE) 
+	{
+		int x,y;
+		m.GetPosition(&x,&y);
+		std::pair<int,int> cord (x,y);
+		items.push_back(std::make_pair(SPEED_BUFF_ID,cord));
+	}
+}
+void cScene::DropPowerShot(cMonstre m)
+{
+	int chance = rand()%100;
+	if (chance<DROP_POWER_SHOT_RATE) 
+	{
+		int x,y;
+		m.GetPosition(&x,&y);
+		std::pair<int,int> cord (x,y);
+		items.push_back(std::make_pair(POWER_SHOT_BUFF_ID,cord));
+	}
 }
