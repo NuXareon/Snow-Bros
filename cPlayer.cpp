@@ -89,7 +89,9 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters, bool state_freeze)
 		int mstate = monsters[i].GetState();
 		if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2))
 		{
-			return (!state_freeze || (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)));
+			if (state_freeze) {
+				if (!(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)) return true;
+			} else return true;
 		}
 	}	
 	return false;
@@ -120,8 +122,6 @@ bool cPlayer::CollidesMonstre(cMonstre monster, bool state_freeze)
 	int mstate = monster.GetState();
 	if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2))
 	{
-		//if (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4)) return true;
-		//else if (!state_freeze) return true;
 		return (!state_freeze || (state_freeze && !(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)));
 	}
 
@@ -149,6 +149,9 @@ void cPlayer::GetMort(bool *x){
 
 void cPlayer::GetVida(int *x){
 	*x = vida;
+}
+void cPlayer::SetVida(int x) {
+	vida = x;
 }
 void cPlayer::GetDeath(bool *x){
 	*x = death;

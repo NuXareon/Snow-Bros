@@ -41,6 +41,7 @@ public:
 	void ShotCollisions(std::vector<int>* coll);
 
 	void Roll(int i, bool left);
+	void RollingCollisions();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene

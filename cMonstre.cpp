@@ -1,11 +1,12 @@
-
 #include "cMonstre.h"
+#include "cScene.h"
 
 cMonstre::cMonstre() {
 	time = 0;	
 	atac = false;
 	hp = MONSTER_HP;
 	regen_cd = MONSTER_REGEN_CD;
+	roll_collision = false;
 }
 cMonstre::~cMonstre(){}
 
@@ -108,7 +109,10 @@ void cMonstre::AI(int *map)
 			else MoveRight(map);
 		}
 	}
-	else if (GetState() == STATE_ROLLINGL) RollLeft(map);
+	else if (GetState() == STATE_ROLLINGL) 
+	{
+		RollLeft(map);
+	}
 	else if (GetState() == STATE_ROLLINGR) RollRight(map);
 }
 void cMonstre::Freeze()
@@ -174,4 +178,43 @@ void cMonstre::Roll(bool left)
 {
 	if (left) SetState(STATE_ROLLINGL);
 	else SetState(STATE_ROLLINGR);
+}
+void cMonstre::RollingCollisions(std::vector<cMonstre>* monsters)
+{
+	int tile_x,tile_y;
+	int i;
+	int width_tiles,height_tiles;
+	int x, y;
+	int w,h;
+	int xm, ym;
+	int wm,hm;
+	GetWidthHeight(&w,&h);
+	GetPosition(&x,&y);
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+	width_tiles  = w / TILE_SIZE;
+	height_tiles = h / TILE_SIZE;
+
+	int tile_xr = tile_x + width_tiles;
+	int tile_xl = tile_x;
+
+	for (i=0; i<(*monsters).size(); ++i)
+	{
+		(*monsters)[i].GetPosition(&xm,&ym);
+		(*monsters)[i].GetWidthHeight(&wm,&hm);
+		int mstate = (*monsters)[i].GetState();
+		if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2) && !(mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR))
+		{
+			(*monsters)[i].SetRollCollision(true);
+		}
+	}	
+}
+void cMonstre::SetRollCollision(bool rc)
+{
+	roll_collision = rc;
+}
+bool cMonstre::GetRollCollision()
+{
+	return roll_collision;
 }

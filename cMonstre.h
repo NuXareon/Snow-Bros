@@ -3,6 +3,7 @@
 #include "cBicho.h"
 #include <stdlib.h>
 #include <time.h>
+#include <set>
 
 #define MONSTRE_START_CX		3
 #define MONSTRE_START_CY		2
@@ -22,6 +23,9 @@ public:
 	void DecreaseHP(int x);
 	void Regen();
 	void Roll(bool left);
+	void RollingCollisions(std::vector<cMonstre>* monsters);
+	void SetRollCollision(bool rc);
+	bool GetRollCollision();
 
 private:
 	int regen_cd;
@@ -29,4 +33,5 @@ private:
 	bool atac;
 	int tini;
 	int hp;
+	bool roll_collision;
 };

@@ -1,5 +1,6 @@
 #include "cScene.h"
 #include "Globals.h"
+#include <algorithm>
 
 cScene::cScene(void)
 {
@@ -100,12 +101,12 @@ bool cScene::LoadMonsters(int level) {
 	err=fopen_s(&fd,file,"r");
 	if(fd==NULL) return false;
 
+	monsters.clear();
+	
 	while(fscanf_s(fd,"%d",&tex) > 0) // read texture (type of monster)
 	{ 
 		int b1 = fscanf_s(fd,"%d",&px); // read x position
 		int c1 = fscanf_s(fd,"%d",&py); // read y position
-
-		
 
 		cMonstre* b = new cMonstre();
 		cMonstre bb = *b;
@@ -126,9 +127,9 @@ void cScene::Draw(int tex_id)
 	glCallList(id_DL);
 	glDisable(GL_TEXTURE_2D);
 }
-void cScene::DrawMonsters(int tex_id, int extra_tex_id){
-	unsigned int i;
-	for (i = 0; i < monsters.size(); ++i)
+void cScene::DrawMonsters(int tex_id, int extra_tex_id)
+{
+	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].Draw(tex_id, extra_tex_id);
 	}
@@ -145,6 +146,7 @@ void cScene::Logic()
 	{
 		monsters[i].Logic(map);
 		monsters[i].Regen();
+		if (monsters[i].GetRollCount() >= MAX_ROLL_COUNT) monsters.erase(monsters.begin()+i);
 	}
 	for (i=0; i < shots.size(); ++i)
 	{
@@ -154,8 +156,7 @@ void cScene::Logic()
 }
 void cScene::AI()
 {
-	unsigned int i;
-	for (i = 0; i < monsters.size(); ++i)
+	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].AI(map);
 	}
@@ -169,9 +170,9 @@ void cScene::AddShot(int x, int y, int w, int h, int dir)
 	ss.SetDirection(dir);
 	shots.push_back(ss);
 }
-void cScene::DrawShots(int tex_id){
-	unsigned int i;
-	for (i = 0; i < shots.size(); ++i)
+void cScene::DrawShots(int tex_id)
+{
+	for (unsigned int i = 0; i < shots.size(); ++i)
 	{
 		int dir;
 		float xo,yo,xf,yf;
@@ -203,9 +204,6 @@ void cScene::ShotCollisions(std::vector<int>* coll)
 			if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4)
 			{
 				(*coll).push_back(m);
-				// distancia player-monster < n
-				// monster.setX(rolling)
-				// monster.roll(left)
 			}
 			monsters[m].DecreaseHP(SHOT_DAMAGE);
 			monsters[m].Freeze();
@@ -215,4 +213,16 @@ void cScene::ShotCollisions(std::vector<int>* coll)
 void cScene::Roll(int i, bool left)
 {
 	monsters[i].Roll(left);
+}
+bool RemoveRollingCondition(cMonstre m)
+{
+	return m.GetRollCollision();
+}
+void cScene::RollingCollisions()
+{
+	for (unsigned int i = 0; i < monsters.size(); ++i)
+	{
+		if (monsters[i].GetState() == STATE_ROLLINGR || monsters[i].GetState() == STATE_ROLLINGL) monsters[i].RollingCollisions(&monsters);
+	}
+	monsters.erase(std::remove_if(monsters.begin(), monsters.end(),RemoveRollingCondition),monsters.end());
 }

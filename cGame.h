@@ -12,6 +12,7 @@
 
 #define GAME_WIDTH	640
 #define GAME_HEIGHT 480
+#define MAX_LEVEL	9
 
 class cGame
 {
@@ -43,6 +44,7 @@ private:
 	bool mortPlayer;
 	int punts;
 	int maxPunts;
+	int level;
 };
 
 

@@ -40,7 +40,8 @@
 #define STATE_ROLLINGL		19
 #define STATE_ROLLINGR		20
 
-#define SHOT_CD			15
+#define SHOT_CD				15
+#define MAX_ROLL_COUNT		4
 
 
 class cRect
@@ -67,6 +68,7 @@ public:
 	void GetType(int *i);
 	void SetShotCd(int cd);
 	void GetShotCd(int *cd);
+	int GetRollCount();
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
@@ -103,4 +105,5 @@ private:
 	int seq,delay;
 
 	int shot_cd;
+	int roll_count;
 };

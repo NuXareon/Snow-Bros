@@ -1,29 +1,22 @@
-﻿Build started 25-Mar-14 14:09:13.
+﻿Build started 26-Mar-14 2:35:15.
      1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GLUTMain.cpp cBicho.cpp cGame.cpp cMonstre.cpp cPlayer.cpp cScene.cpp cShot.cpp
-         GLUTMain.cpp
-         Generating Code...
-         Compiling...
-         cShot.cpp
          cScene.cpp
          cPlayer.cpp
      1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(85): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(101): warning C4101: 'i' : unreferenced local variable
+     1>c:\users\nuxe\documents\github\snow-bros\cplayer.cpp(103): warning C4101: 'i' : unreferenced local variable
          cMonstre.cpp
-     1>c:\users\nuxe\documents\github\snow-bros\cmonstre.cpp(92): warning C4101: 'tfi' : unreferenced local variable
-         cGame.cpp
-     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(195): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
-     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(196): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
-     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(197): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
-     1>c:\users\nuxe\documents\github\snow-bros\cgame.cpp(192): warning C4101: 'fx' : unreferenced local variable
-         cBicho.cpp
+     1>c:\users\nuxe\documents\github\snow-bros\cmonstre.cpp(93): warning C4101: 'tfi' : unreferenced local variable
+     1>c:\users\nuxe\documents\github\snow-bros\cmonstre.cpp(202): warning C4018: '<' : signed/unsigned mismatch
          Generating Code...
+         Skipping... (no relevant changes detected)
+         cShot.cpp
+         cGame.cpp
+         cBicho.cpp
+         GLUTMain.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -50,4 +43,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.99
+Time Elapsed 00:00:01.57

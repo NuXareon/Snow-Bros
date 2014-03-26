@@ -21,6 +21,7 @@ public:
 	void SetMort(bool x);
 	void GetMort(bool *x);
 	void GetVida(int *x);
+	void SetVida(int x);
 	void GetDeath(bool *x);
 
 private:

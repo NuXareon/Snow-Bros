@@ -7,6 +7,7 @@ cGame::cGame(void)
 	mortPlayer = false;
 	punts = 0;
 	maxPunts = 0;
+	level = 1;
 }
 
 cGame::~cGame(void)
@@ -30,11 +31,11 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"blocksSB.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(8);
+	res = Scene.LoadLevel(level);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_MONSTER,"monstres12.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadMonsters(1);
+	res = Scene.LoadMonsters(level);
 	if(!res) return false;
 
 	//Player initialization
@@ -144,17 +145,39 @@ bool cGame::Process()
 			int b = 4;
 			if (ps_collision) 
 			{
-				//cMonstre* monster = Scene.GetMonsters(shot_collisions[i]);
 				int pstate = Player.GetState();
 				bool roll_direction_left = ((pstate <= STATE_CAUREL && pstate >= STATE_LOOKLEFT) || pstate == STATE_ATACL);
 				Scene.Roll(shot_collisions[i], roll_direction_left);
-				int a = 3;
 			}
 		}
 	}
 
+	Scene.RollingCollisions();
+
 	Player.GetVida(&vida);
-	if(vida == 0) Scene.LoadLevel(2); 
+	if(vida == 0) 
+	{
+		Scene.LoadLevel(1);
+		Scene.LoadMonsters(1);
+		Player.SetVida(3);
+	}
+
+	bool next_level = Scene.GetMonsters().size() == 0;
+	if (next_level)
+	{
+		level = (level%MAX_LEVEL)+1;
+
+		//Scene initialization
+		res = Scene.LoadLevel(level);
+		if(!res) return false;
+		res = Scene.LoadMonsters(level);
+		if(!res) return false;
+
+		//Player initialization
+		Player.SetTile(2,1);
+		Player.SetState(STATE_LOOKRIGHT);
+	}
+
 
 	return res;
 }

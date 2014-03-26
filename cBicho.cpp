@@ -1,3 +1,4 @@
+#include <set>
 #include "cBicho.h"
 #include "cScene.h"
 #include "Globals.h"
@@ -11,6 +12,7 @@ cBicho::cBicho(void)
 	caure = false;
 
 	shot_cd = 0;
+	roll_count = 0;
 }
 cBicho::~cBicho(void){}
 
@@ -67,6 +69,10 @@ void cBicho::GetShotCd(int *cd)
 {
 	*cd = shot_cd;
 }
+int cBicho::GetRollCount()
+{
+	return roll_count;
+}
 bool cBicho::Collides(cRect *rc)
 {
 	return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
@@ -111,14 +117,12 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if( (y % TILE_SIZE) == 0 )
 		{
-			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 1 ||
-				map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 2)
+			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 0)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 1 ||
-				map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 2)
+			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 0)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;
@@ -128,7 +132,6 @@ bool cBicho::CollidesMapFloor(int *map)
 	}
 	return on_base;
 }
-
 void cBicho::GetArea(cRect *rc)
 {
 	rc->left   = x;
@@ -230,6 +233,8 @@ void cBicho::RollLeft(int *map)
 		if(CollidesMapWall(map,false) )
 		{
 			x = xaux;
+			state = STATE_ROLLINGR;
+			++roll_count;
 			//if(!caure && !jumping)state = STATE_LOOKLEFT;
 			//else if(caure) state = STATE_CAUREL;
 		}
@@ -261,6 +266,8 @@ void cBicho::RollRight(int *map)
 		if(CollidesMapWall(map,true))
 		{
 			x = xaux;
+			state = STATE_ROLLINGL;
+			++roll_count;
 			//if(!caure && !jumping)state = STATE_LOOKRIGHT;
 			//else if(caure) state = STATE_CAURER;
 		}
