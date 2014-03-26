@@ -90,6 +90,7 @@ public:
 
 	void NextFrame(int max);
 	int  GetFrame();
+	void ResetFrame();
 
 private:
 	int x,y;

@@ -78,7 +78,16 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 		if (state == STATE_FREEZE_L1 || state == STATE_FREEZE_R1) xo = 0.0f; yo = 0.75f;
 		if (state == STATE_FREEZE_L2 || state == STATE_FREEZE_R2) xo = 0.25f; yo = 0.75f;
 		if (state == STATE_FREEZE_L3 || state == STATE_FREEZE_R3) xo = 0.50f; yo = 0.75f;
-		if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4 || state == STATE_ROLLINGL || state == STATE_ROLLINGR) xo = 0.75f; yo = 0.75f;
+		if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4) xo = 0.75f; yo = 0.75f;
+		if (state == STATE_ROLLINGR) 
+		{
+			xo = 0.0f + (GetFrame()*0.25); yo = 1.0f;
+			NextFrame(4);
+		}
+		if (state == STATE_ROLLINGL)
+		{
+			xo = 0.0f + (abs(GetFrame()-4)%4*0.25); yo = 1.0f;
+		}
 
 		xf = xo + 0.25f;
 		yf = yo - 0.25f;
@@ -178,6 +187,7 @@ void cMonstre::Roll(bool left)
 {
 	if (left) SetState(STATE_ROLLINGL);
 	else SetState(STATE_ROLLINGR);
+	ResetFrame();
 }
 void cMonstre::RollingCollisions(std::vector<cMonstre>* monsters)
 {

@@ -235,23 +235,12 @@ void cBicho::RollLeft(int *map)
 			x = xaux;
 			state = STATE_ROLLINGR;
 			++roll_count;
-			//if(!caure && !jumping)state = STATE_LOOKLEFT;
-			//else if(caure) state = STATE_CAUREL;
 		}
 	}
 	//Advance, no problem
 	else
 	{
 		x -= STEP_LENGTH;
-		/*
-		if(caure && !jumping) state = STATE_CAUREL;
-		else if(state != STATE_WALKLEFT && !jumping)
-		{
-			state = STATE_WALKLEFT;
-			seq = 0;
-			delay = 0;
-		}
-		*/
 	}
 }
 void cBicho::RollRight(int *map)
@@ -268,23 +257,12 @@ void cBicho::RollRight(int *map)
 			x = xaux;
 			state = STATE_ROLLINGL;
 			++roll_count;
-			//if(!caure && !jumping)state = STATE_LOOKRIGHT;
-			//else if(caure) state = STATE_CAURER;
 		}
 	}
 	//Advance, no problem
 	else
 	{
 		x += STEP_LENGTH;
-		/*
-		if(caure && !jumping) state = STATE_CAURER;
-		else if(state != STATE_WALKRIGHT && !jumping)
-		{
-			state = STATE_WALKRIGHT;
-			seq = 0;
-			delay = 0;
-		}
-		*/
 	}
 }
 void cBicho::Stop(int *map)
@@ -400,4 +378,8 @@ int cBicho::GetState()
 void cBicho::SetState(int s)
 {
 	state = s;
+}
+void cBicho::ResetFrame()
+{
+	seq = 0;
 }
