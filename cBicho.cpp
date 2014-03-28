@@ -1,4 +1,3 @@
-#include <set>
 #include "cBicho.h"
 #include "cScene.h"
 #include "Globals.h"
@@ -117,12 +116,14 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if( (y % TILE_SIZE) == 0 )
 		{
-			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 1 ||
+				map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] == 2)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 1 ||
+				map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] == 2)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;
@@ -132,6 +133,7 @@ bool cBicho::CollidesMapFloor(int *map)
 	}
 	return on_base;
 }
+
 void cBicho::GetArea(cRect *rc)
 {
 	rc->left   = x;
@@ -139,6 +141,7 @@ void cBicho::GetArea(cRect *rc)
 	rc->bottom = y;
 	rc->top    = y+h;
 }
+
 void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
 	int screen_x,screen_y;

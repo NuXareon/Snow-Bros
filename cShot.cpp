@@ -38,6 +38,15 @@ void cShot::GetDirection(int *dir)
 {
 	*dir = direction;
 }
+void cShot::SetTipus(int t)
+{
+	tipus = t;
+}
+void cShot::GetTipus(int *t)
+{
+	*t = tipus;
+}
+
 void cShot::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
 	int screen_x,screen_y;
@@ -128,12 +137,13 @@ bool cShot::Logic(int *map)
 	bool collision = false;
 	if (direction == LEFT_DIRECTION) collision = MoveLeft(map);
 	else if (direction == RIGHT_DIRECTION) collision = MoveRight(map);
-	Fall();
+	if(tipus==1) Fall();
 	ttl -= 1;
 	return (ttl > 0 && !collision);
 }
 int cShot::CollidesMonstre(std::vector<cMonstre> monsters)
 {
+	if(tipus ==2)return -1;
 	int tile_x,tile_y;
 	unsigned int i;
 	int width_tiles,height_tiles;
@@ -161,5 +171,37 @@ int cShot::CollidesMonstre(std::vector<cMonstre> monsters)
 			return i;
 		}
 	}	
+	return -1;
+}
+
+int cShot::CollidesPlayer(cPlayer player)
+{
+	if(tipus == 1)return -1;
+	int tile_x,tile_y;
+	unsigned int i;
+	int width_tiles,height_tiles;
+	int x, y;
+	int w,h;
+	int xm, ym;
+	int wm,hm;
+	GetWidthHeight(&w,&h);
+	GetPosition(&x,&y);
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+	width_tiles  = w / TILE_SIZE;
+	height_tiles = h / TILE_SIZE;
+
+	int tile_xr = tile_x + width_tiles;
+	int tile_xl = tile_x;
+
+	
+	player.GetPosition(&xm,&ym);
+	player.GetWidthHeight(&wm,&hm);
+	if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
+	{
+		return 1;
+	}
+		
 	return -1;
 }

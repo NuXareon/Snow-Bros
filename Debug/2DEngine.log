@@ -1,10 +1,16 @@
-﻿Build started 26-Mar-14 22:05:26.
-     1>Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
+﻿Build started 27/03/2014 14:22:16.
+     1>Project "C:\Users\albert.millas\Desktop\Snow-Bros\2DEngine.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\2DEngine.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt cScene.cpp
-         cScene.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt cGame.cpp
+         cGame.cpp
+     1>c:\users\albert.millas\desktop\snow-bros\cgame.cpp(270): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
+     1>c:\users\albert.millas\desktop\snow-bros\cgame.cpp(271): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
+     1>c:\users\albert.millas\desktop\snow-bros\cgame.cpp(272): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdlib.h(867) : see declaration of 'itoa'
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -12,6 +18,7 @@
          Debug\cBicho.obj
          Debug\cData.obj
          Debug\cGame.obj
+         Debug\cMenu.obj
          Debug\cMonstre.obj
          Debug\cPlayer.obj
          Debug\cScene.obj
@@ -23,12 +30,12 @@
          All outputs are up-to-date.
        LinkEmbedManifest:
          All outputs are up-to-date.
-         2DEngine.vcxproj -> C:\Users\NuXe\Documents\GitHub\Snow-Bros\Debug\2DEngine.exe
+         2DEngine.vcxproj -> C:\Users\albert.millas\Desktop\Snow-Bros\Debug\2DEngine.exe
        FinalizeBuildStatus:
          Deleting file "Debug\2DEngine.unsuccessfulbuild".
          Touching "Debug\2DEngine.lastbuildstate".
-     1>Done Building Project "C:\Users\NuXe\Documents\GitHub\Snow-Bros\2DEngine.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\albert.millas\Desktop\Snow-Bros\2DEngine.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.80
+Time Elapsed 00:00:01.37

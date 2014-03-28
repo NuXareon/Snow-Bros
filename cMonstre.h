@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 #define MONSTRE_START_CX		3
 #define MONSTRE_START_CY		2
 #define MONSTER_HP				100
@@ -21,10 +22,16 @@ public:
 	void Freeze();
 	void DecreaseHP(int x);
 	void Regen();
+
 	void Roll(bool left);
 	void RollingCollisions(std::vector<cMonstre>* monsters);
 	void SetRollCollision(bool rc);
 	bool GetRollCollision();
+
+	void GetCongelat(bool *x);
+	void GetAtac(bool *x);
+	void GetBolaFoc(bool *x);
+	void SetBolaFoc(bool x);
 
 private:
 	int regen_cd;
@@ -33,4 +40,7 @@ private:
 	int tini;
 	int hp;
 	bool roll_collision;
+	bool congelat;
+	bool bolaFoc;
+
 };

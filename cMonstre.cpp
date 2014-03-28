@@ -7,6 +7,8 @@ cMonstre::cMonstre() {
 	hp = MONSTER_HP;
 	regen_cd = MONSTER_REGEN_CD;
 	roll_collision = false;
+	congelat = false;
+	bolaFoc = false;
 }
 cMonstre::~cMonstre(){}
 
@@ -47,11 +49,13 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 								break;
 		// tipus 2
 		case STATE_ATACL:		xo = 0.25f; yo = 0.625f;
-								if(GetFrame() == 5) atac = false;;
+								if(GetFrame() == 5) atac = false;
+								if(GetFrame() == 1) bolaFoc = false;
 								NextFrame(6);
 								break;
 		case STATE_ATACR:		xo = 0.375f; yo = 0.625f;
 								if(GetFrame() == 5) atac = false;
+								if(GetFrame() == 1) bolaFoc = false;
 								NextFrame(6);
 								break;
 
@@ -79,6 +83,7 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 		if (state == STATE_FREEZE_L2 || state == STATE_FREEZE_R2) xo = 0.25f; yo = 0.75f;
 		if (state == STATE_FREEZE_L3 || state == STATE_FREEZE_R3) xo = 0.50f; yo = 0.75f;
 		if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4) xo = 0.75f; yo = 0.75f;
+
 		if (state == STATE_ROLLINGR) 
 		{
 			xo = 0.0f + (GetFrame()*0.25); yo = 1.0f;
@@ -98,30 +103,31 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 
 void cMonstre::AI(int *map)
 {
-	int x = rand()%100;
+	int bolaF = rand()%100;
+	int salt = rand()%200;
 	int tipus,tfi;
 	GetType(&tipus);
-	if ((GetState() < STATE_FREEZE_L1 || GetState() > STATE_FREEZE_R4) && GetState() != STATE_ROLLINGL && GetState() != STATE_ROLLINGR) {
-		if(x<2 && tipus==2) {
+	if (GetState() < STATE_FREEZE_L1 || GetState() > STATE_FREEZE_R4 && GetState() != STATE_ROLLINGL && GetState() != STATE_ROLLINGR) {
+		if(bolaF<2 && tipus==2) {
 			if(GetState() == STATE_WALKLEFT){
+				bolaFoc = true;
 				atac = true;
 				SetState(STATE_ATACL);
 			}
 			else if (GetState() == STATE_WALKRIGHT){
+				bolaFoc = true;
 				atac = true;
 				SetState(STATE_ATACR);
 			}
 		}
+		if(salt <1) Jump(map);
 		if(!atac){
 			time = (time+1)%100;
 			if(time > 50) MoveLeft(map);
 			else MoveRight(map);
 		}
 	}
-	else if (GetState() == STATE_ROLLINGL) 
-	{
-		RollLeft(map);
-	}
+	else if (GetState() == STATE_ROLLINGL) RollLeft(map);
 	else if (GetState() == STATE_ROLLINGR) RollRight(map);
 }
 void cMonstre::Freeze()
@@ -162,6 +168,8 @@ void cMonstre::Freeze()
 									break;
 		}
 	}
+	if(GetState() < STATE_FREEZE_L1 || GetState() > STATE_FREEZE_R4 && GetState() != STATE_ROLLINGL && GetState() != STATE_ROLLINGR) congelat = true;
+	else congelat = false;
 }
 void cMonstre::DecreaseHP(int x)
 {
@@ -227,4 +235,16 @@ void cMonstre::SetRollCollision(bool rc)
 bool cMonstre::GetRollCollision()
 {
 	return roll_collision;
+}
+void cMonstre::GetCongelat(bool *x){
+	*x = congelat;
+}
+void cMonstre::GetAtac(bool *x){
+	*x = atac;
+}
+void cMonstre::GetBolaFoc(bool *x){
+	*x = bolaFoc;
+}
+void cMonstre::SetBolaFoc(bool x){
+	bolaFoc = x;
 }

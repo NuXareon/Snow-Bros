@@ -46,6 +46,10 @@ void cPlayer::Draw(int tex_id)
 								if(6 == GetFrame())	death = true;
 								NextFrame(7);
 								break;
+		case STATE_DEATH_FOC:	xo = 0.0f + (GetFrame()*0.125f); yo = 1.0f;								
+								if(4 == GetFrame())	death = true;
+								NextFrame(5);
+								break;
 		case STATE_ATACL:		xo = 0.25f; yo = 0.5f;
 								if(GetFrame() == 2) SetState(STATE_LOOKLEFT);
 								NextFrame(3);
@@ -62,7 +66,8 @@ void cPlayer::Draw(int tex_id)
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
 
-bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters, bool state_freeze)
+//a millorar
+int cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
 {
 	int tile_x,tile_y;
 	int i;
@@ -86,15 +91,12 @@ bool cPlayer::CollidesMonstre(std::vector<cMonstre> monsters, bool state_freeze)
 	{
 		monsters[i].GetPosition(&xm,&ym);
 		monsters[i].GetWidthHeight(&wm,&hm);
-		int mstate = monsters[i].GetState();
-		if ((abs((x+w/2)-(xm+wm/2)-5) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)-5) < (h+hm)/2))
+		if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
 		{
-			if (state_freeze) {
-				if (!(mstate >= STATE_FREEZE_L1 && mstate <= STATE_FREEZE_R4 || mstate == STATE_ROLLINGL || mstate == STATE_ROLLINGR)) return true;
-			} else return true;
+			return i;
 		}
 	}	
-	return false;
+	return -1;
 }
 
 bool cPlayer::CollidesMonstre(cMonstre monster, bool state_freeze)
@@ -147,12 +149,13 @@ void cPlayer::GetMort(bool *x){
 	*x = mort;
 }
 
+void cPlayer::SetVida(int x){
+	vida = x;
+}
 void cPlayer::GetVida(int *x){
 	*x = vida;
-}
-void cPlayer::SetVida(int x) {
-	vida = x;
 }
 void cPlayer::GetDeath(bool *x){
 	*x = death;
 }
+

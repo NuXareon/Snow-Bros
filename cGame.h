@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <iostream>
+using namespace std;
+
 #define SPECIAL_KEY_OFFSET 100 //Offset que sumem a les tecles especial (fletxes, F1, etc...) per evitar solapament amb caracters ASCII
 
 #define GAME_WIDTH	640
@@ -34,7 +37,12 @@ public:
 	void Render();
 	void render_string(void* font, const char* string);
 	void render_info();
-	
+
+	void UpdatePunts(int x);
+	cPlayer GetPlayer();
+
+	void DrawImg(int tex_id, int x, int y, int h, int w);
+
 private:
 	unsigned char keys[256];
 	cScene Scene;
@@ -44,7 +52,7 @@ private:
 	bool mortPlayer;
 	int punts;
 	int maxPunts;
-	int level;
+	int lvl;
 };
 
 

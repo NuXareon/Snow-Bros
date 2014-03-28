@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "cMonstre.h"
 #include <vector>
+#include "cPlayer.h"
 
 #define SHOT_STEP_LENGTH		8
 #define SHOT_JUMP_HEIGHT		32
@@ -27,6 +28,8 @@ public:
 	void GetWidthHeight(int *w,int *h);
 	void SetDirection(int dir);
 	void GetDirection(int *dir);
+	void SetTipus(int t);
+	void GetTipus(int *t);
 
 	bool CollidesMapWall(int *map,bool right);
 
@@ -40,12 +43,14 @@ public:
 	bool Logic(int *map);	// true = stay alive, false = dead
 
 	int CollidesMonstre(std::vector<cMonstre> monsters);
+	int CollidesPlayer(cPlayer player);
 
 private:
 
 	int x,y;
 	int w,h;
-	int direction;	
+	int direction;
+	int tipus;
 
 	int ttl;
 

@@ -94,6 +94,7 @@
     <ClCompile Include="cBicho.cpp" />
     <ClCompile Include="cData.cpp" />
     <ClCompile Include="cGame.cpp" />
+    <ClCompile Include="cMenu.cpp" />
     <ClCompile Include="cMonstre.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cScene.cpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="cBicho.h" />
     <ClInclude Include="cData.h" />
     <ClInclude Include="cGame.h" />
+    <ClInclude Include="cMenu.h" />
     <ClInclude Include="cMonstre.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cScene.h" />

@@ -33,16 +33,16 @@
 
 
 #define STATE_DEATH			16
+#define STATE_DEATH_FOC		17
 
-#define STATE_ATACL			17
-#define STATE_ATACR			18
+#define STATE_ATACL			18
+#define STATE_ATACR			19
 
-#define STATE_ROLLINGL		19
-#define STATE_ROLLINGR		20
+#define STATE_ROLLINGL		20
+#define STATE_ROLLINGR		21
 
 #define SHOT_CD				15
 #define MAX_ROLL_COUNT		4
-
 
 class cRect
 {

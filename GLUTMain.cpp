@@ -1,31 +1,39 @@
 
 #include "Globals.h"
 #include "cGame.h"
+#include "cMenu.h"
 
 //Delete console
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 cGame Game;
+cMenu Menu;
 
 void AppRender()
 {
-	Game.Render();
+	Menu.Render();
+	//Game.Render();
 }
 void AppKeyboard(unsigned char key, int x, int y)
 {
 	Game.ReadKeyboard(key,x,y,true);
+	Menu.ReadKeyboard(key,x,y,true);
 }
 void AppKeyboardUp(unsigned char key, int x, int y)
 {
 	Game.ReadKeyboard(key,x,y,false);
+	Menu.ReadKeyboard(key,x,y,false);
 }
 void AppSpecialKeys(int key, int x, int y)
 {
 	Game.ReadKeyboardSpecial(key,x,y,true);
+	Menu.ReadKeyboardSpecial(key,x,y,true);
 }
 void AppSpecialKeysUp(int key, int x, int y)
 {
 	Game.ReadKeyboardSpecial(key,x,y,false);
+	Menu.ReadKeyboardSpecial(key,x,y,false);
+
 }
 void AppMouse(int button, int state, int x, int y)
 {
@@ -33,7 +41,12 @@ void AppMouse(int button, int state, int x, int y)
 }
 void AppIdle()
 {
-	if(!Game.Loop()) exit(0);
+	if(Menu.GetMenu() == 3){
+		if(!Game.Loop()) exit(0);
+	}
+	else{
+		if(!Menu.Loop()) exit(0);
+	}
 }
 
 void main(int argc, char** argv)
@@ -73,6 +86,7 @@ void main(int argc, char** argv)
 
 	//Game initializations
 	Game.Init();
+	Menu.Init();
 
 	//Application loop
 	glutMainLoop();	

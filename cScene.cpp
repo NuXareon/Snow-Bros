@@ -20,6 +20,18 @@ cMonstre cScene::GetMonsters(int i)
 	return monsters[i];
 }
 
+std::vector<cShot> cScene::Getshot(){
+	return shots;
+}
+
+void cScene::Setshot(std::vector<cShot> s){
+	shots = s;
+}
+
+void cScene::SetPlayer(cPlayer p){
+	player = p;
+}
+
 bool cScene::LoadLevel(int level)
 {
 	errno_t err;
@@ -101,12 +113,12 @@ bool cScene::LoadMonsters(int level) {
 	err=fopen_s(&fd,file,"r");
 	if(fd==NULL) return false;
 
-	monsters.clear();
-	
 	while(fscanf_s(fd,"%d",&tex) > 0) // read texture (type of monster)
 	{ 
 		int b1 = fscanf_s(fd,"%d",&px); // read x position
 		int c1 = fscanf_s(fd,"%d",&py); // read y position
+
+		
 
 		cMonstre* b = new cMonstre();
 		cMonstre bb = *b;
@@ -168,9 +180,9 @@ void cScene::DrawItems(int tex_id)
 	}
 	glDisable(GL_TEXTURE_2D);
 }
-void cScene::DrawMonsters(int tex_id, int extra_tex_id)
-{
-	for (unsigned int i = 0; i < monsters.size(); ++i)
+void cScene::DrawMonsters(int tex_id, int extra_tex_id){
+	unsigned int i;
+	for (i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].Draw(tex_id, extra_tex_id);
 	}
@@ -197,39 +209,44 @@ void cScene::Logic()
 }
 void cScene::AI()
 {
-	for (unsigned int i = 0; i < monsters.size(); ++i)
+	unsigned int i;
+	for (i = 0; i < monsters.size(); ++i)
 	{
 		monsters[i].AI(map);
 	}
 }
-void cScene::AddShot(int x, int y, int w, int h, int dir)
+void cScene::AddShot(int x, int y, int w, int h, int dir, int t)
 {
 	cShot* s = new cShot();
 	cShot ss = *s;
 	ss.SetPosition(x,y);
 	ss.SetWidthHeight(w,h);
 	ss.SetDirection(dir);
+	ss.SetTipus(t);
 	shots.push_back(ss);
 }
-void cScene::DrawShots(int tex_id)
-{
-	for (unsigned int i = 0; i < shots.size(); ++i)
+void cScene::DrawShots(int tex_id){
+	unsigned int i;
+	for (i = 0; i < shots.size(); ++i)
 	{
-		int dir;
+		int dir,tipus;
+		float aux = 0.0f;
 		float xo,yo,xf,yf;
 		shots[i].GetDirection(&dir);
+		shots[i].GetTipus(&tipus);
+		if(tipus == 2) aux = 0.75f;
 		if (dir == LEFT_DIRECTION) 
 		{
 			xo=0.5f;
-			yo=0.0f;
+			yo=0.0f+aux;
 		}
 		else if (dir == RIGHT_DIRECTION) 
 		{
 			xo=0.0f;
-			yo=0.0f;
+			yo=0.0f+aux;
 		}
 		xf=xo+0.25f;
-		yf=yo+0.25f;
+		yf=yo+.25f;
 		shots[i].DrawRect(tex_id,xo,yo,xf,yf);
 	}
 }
@@ -264,7 +281,10 @@ void cScene::RollingCollisions()
 	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
 		if (monsters[i].GetState() == STATE_ROLLINGR || monsters[i].GetState() == STATE_ROLLINGL) monsters[i].RollingCollisions(&monsters);
-		if (monsters[i].GetRollCollision()) DropItem(monsters[i]);
+		if (monsters[i].GetRollCollision()) 
+		{
+			DropItem(monsters[i]);
+		}
 	}
 	monsters.erase(std::remove_if(monsters.begin(), monsters.end(),RemoveRollingCondition),monsters.end());
 }
@@ -302,3 +322,5 @@ void cScene::DropPowerShot(cMonstre m)
 		items.push_back(std::make_pair(POWER_SHOT_BUFF_ID,cord));
 	}
 }
+
+
