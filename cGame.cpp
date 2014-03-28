@@ -42,7 +42,7 @@ bool cGame::Init()
 	if(!res) return false;
 
 	//Player initialization
-	res = Data.LoadImage(IMG_PLAYER,"snowbors256.png",GL_RGBA);
+	res = Data.LoadImage(IMG_PLAYER,"snowbros256.png",GL_RGBA);
 	if(!res) return false;
 	res = Data.LoadImage(IMG_SHOT_P,"dispar.png",GL_RGBA);
 	if(!res) return false;
@@ -221,6 +221,7 @@ bool cGame::Process()
 		if(!res) return false;
 		res = Scene.LoadMonsters(lvl);
 		if(!res) return false;
+		Scene.ClearItems();
 
 		//Player initialization
 		Player.SetTile(2,1);
@@ -238,7 +239,7 @@ void cGame::Render()
 	glLoadIdentity();
 
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
-	//Scene.DrawItems(Data.GetID(IMG_PLAYER));
+	Scene.DrawItems(Data.GetID(IMG_PLAYER));
 	Scene.DrawMonsters(Data.GetID(IMG_MONSTER), Data.GetID(IMG_SHOT_P));
 	Scene.DrawShots(Data.GetID(IMG_SHOT_P));
 	//Scene.DrawShots(Data.GetID(IMG_SHOT_M));

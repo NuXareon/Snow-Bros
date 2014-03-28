@@ -38,6 +38,7 @@ public:
 
 	bool LoadLevel(int level);
 	bool LoadMonsters(int level);
+	void ClearItems();
 	void AddShot(int x, int y, int w, int h, int direction, int t);
 	void Draw(int tex_id);
 	void DrawItems(int tex_id);

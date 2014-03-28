@@ -132,6 +132,11 @@ bool cScene::LoadMonsters(int level) {
 	return res;
 }
 
+void cScene::ClearItems()
+{
+	items.clear();
+}
+
 void cScene::Draw(int tex_id)
 {
 	glEnable(GL_TEXTURE_2D);
@@ -150,9 +155,9 @@ void cScene::DrawItems(int tex_id)
 
 		switch (type)
 		{
-			case 5: xo = 0.0f; yo = 1.0f;
+			case POWER_SHOT_BUFF_ID: xo = 0.625f; yo = 1.0f;
 					break;
-			case 6: xo = 0.125f; yo = 1.0f;
+			case SPEED_BUFF_ID: xo = 0.750f; yo = 1.0f;
 					break;
 		}
 
@@ -278,6 +283,7 @@ bool RemoveRollingCondition(cMonstre m)
 }
 void cScene::RollingCollisions()
 {
+	//Check collisions
 	for (unsigned int i = 0; i < monsters.size(); ++i)
 	{
 		if (monsters[i].GetState() == STATE_ROLLINGR || monsters[i].GetState() == STATE_ROLLINGL) monsters[i].RollingCollisions(&monsters);
@@ -286,12 +292,22 @@ void cScene::RollingCollisions()
 			DropItem(monsters[i]);
 		}
 	}
+	// Drop items
+	for (unsigned int i = 0; i < monsters.size(); ++i)
+	{
+		if (monsters[i].GetRollCollision() && !(monsters[i].GetState() == STATE_ROLLINGR || monsters[i].GetState() == STATE_ROLLINGL)) 
+		{
+			DropItem(monsters[i]);
+		}
+	}
+	//Delete monsters
 	monsters.erase(std::remove_if(monsters.begin(), monsters.end(),RemoveRollingCondition),monsters.end());
 }
 void cScene::DropItem(cMonstre m)
 {
 	int type;
 	m.GetType(&type);
+	int a = 1;
 	switch(type)
 	{
 		case 1: DropSpeed(m);

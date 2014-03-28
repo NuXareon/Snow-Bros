@@ -86,12 +86,12 @@ void cMonstre::Draw(int tex_id, int extra_tex_id)
 
 		if (state == STATE_ROLLINGR) 
 		{
-			xo = 0.0f + (GetFrame()*0.25); yo = 1.0f;
+			xo = 0.0f + (GetFrame()*0.25); yo = 0.5f;
 			NextFrame(4);
 		}
 		if (state == STATE_ROLLINGL)
 		{
-			xo = 0.0f + (abs(GetFrame()-4)%4*0.25); yo = 1.0f;
+			xo = 0.0f + (abs(GetFrame()-4)%4*0.25); yo = 0.5f;
 		}
 
 		xf = xo + 0.25f;
