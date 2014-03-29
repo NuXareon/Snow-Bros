@@ -35,11 +35,14 @@ public:
 	std::vector<cShot> Getshot();
 	void Setshot(std::vector<cShot> s);
 	void SetPlayer(cPlayer p);
+	std::vector<std::pair<int,std::pair<int,int> > > GetItems();
+	void SetItems(std::vector<std::pair<int,std::pair<int,int> > > i);
+	void DeleteItem(int ci);
 
 	bool LoadLevel(int level);
 	bool LoadMonsters(int level);
 	void ClearItems();
-	void AddShot(int x, int y, int w, int h, int direction, int t);
+	void AddShot(int x, int y, int w, int h, int direction, int t,bool power_shot);
 	void Draw(int tex_id);
 	void DrawItems(int tex_id);
 	void DrawMonsters(int tex_id, int extra_tex_id);

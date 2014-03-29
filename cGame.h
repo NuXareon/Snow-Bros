@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define SPECIAL_KEY_OFFSET 100 //Offset que sumem a les tecles especial (fletxes, F1, etc...) per evitar solapament amb caracters ASCII
@@ -42,6 +43,7 @@ public:
 	cPlayer GetPlayer();
 
 	void DrawImg(int tex_id, int x, int y, int h, int w);
+	void fps();
 
 private:
 	unsigned char keys[256];
@@ -53,6 +55,7 @@ private:
 	int punts;
 	int maxPunts;
 	int lvl;
+	int old_time;
 };
 
 

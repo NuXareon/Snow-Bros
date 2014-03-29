@@ -12,6 +12,9 @@ cBicho::cBicho(void)
 
 	shot_cd = 0;
 	roll_count = 0;
+
+	buff_speed = false;
+	buff_power = false;
 }
 cBicho::~cBicho(void){}
 
@@ -71,6 +74,21 @@ void cBicho::GetShotCd(int *cd)
 int cBicho::GetRollCount()
 {
 	return roll_count;
+}
+void cBicho::DisableBuff(int id)
+{
+	if (id == POWER_SHOT_BUFF_ID) buff_power = false;
+	if (id == SPEED_BUFF_ID) buff_speed = false;
+}
+void cBicho::EnableBuff(int id)
+{
+	if (id == POWER_SHOT_BUFF_ID) buff_power = true;
+	if (id == SPEED_BUFF_ID) buff_speed = true;
+}
+bool cBicho::GetBuffStatus(int id)
+{
+	if (id == POWER_SHOT_BUFF_ID) return buff_power;
+	if (id == SPEED_BUFF_ID) return buff_speed;
 }
 bool cBicho::Collides(cRect *rc)
 {
@@ -170,7 +188,8 @@ void cBicho::MoveLeft(int *map)
 	if( (x % TILE_SIZE) == 0)
 	{
 		xaux = x;
-		x -= STEP_LENGTH;
+		if (buff_speed) x -= 2*STEP_LENGTH;
+		else x -= STEP_LENGTH;
 
 		if(CollidesMapWall(map,false) )
 		{
@@ -182,7 +201,8 @@ void cBicho::MoveLeft(int *map)
 	//Advance, no problem
 	else
 	{
-		x -= STEP_LENGTH;
+		if (buff_speed) x -= 2*STEP_LENGTH;
+		else x -= STEP_LENGTH;
 		if(caure && !jumping) state = STATE_CAUREL;
 		else if(state != STATE_WALKLEFT && !jumping)
 		{
@@ -200,7 +220,8 @@ void cBicho::MoveRight(int *map)
 	if( (x % TILE_SIZE) == 0)
 	{
 		xaux = x;
-		x += STEP_LENGTH;
+		if (buff_speed) x += 2*STEP_LENGTH;
+		else x += STEP_LENGTH;
 		if(CollidesMapWall(map,true))
 		{
 			x = xaux;
@@ -211,7 +232,8 @@ void cBicho::MoveRight(int *map)
 	//Advance, no problem
 	else
 	{
-		x += STEP_LENGTH;
+		if (buff_speed) x += 2*STEP_LENGTH;
+		else x += STEP_LENGTH;
 
 		if(caure && !jumping) state = STATE_CAURER;
 		else if(state != STATE_WALKRIGHT && !jumping)

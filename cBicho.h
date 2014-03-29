@@ -69,6 +69,9 @@ public:
 	void SetShotCd(int cd);
 	void GetShotCd(int *cd);
 	int GetRollCount();
+	void DisableBuff(int id);
+	void EnableBuff(int id);
+	bool GetBuffStatus(int id);
 
 	bool Collides(cRect *rc);
 	bool CollidesMapWall(int *map,bool right);
@@ -107,4 +110,7 @@ private:
 
 	int shot_cd;
 	int roll_count;
+
+	bool buff_speed;
+	bool buff_power;
 };

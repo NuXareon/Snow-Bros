@@ -19,7 +19,7 @@
 class cShot
 {
 public:
-	cShot(void);
+	cShot(bool power_shot);
 	~cShot(void);
 
 	void SetPosition(int x,int y);
@@ -30,6 +30,7 @@ public:
 	void GetDirection(int *dir);
 	void SetTipus(int t);
 	void GetTipus(int *t);
+	bool GetPowerShot();
 
 	bool CollidesMapWall(int *map,bool right);
 
@@ -56,4 +57,6 @@ private:
 
 	int jump_y;
 	int jump_alfa;
+
+	bool shot_buff;
 };

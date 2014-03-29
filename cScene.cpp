@@ -32,6 +32,18 @@ void cScene::SetPlayer(cPlayer p){
 	player = p;
 }
 
+std::vector<std::pair<int,std::pair<int,int> > > cScene::GetItems(){
+	return items;
+}
+
+void cScene::SetItems(std::vector<std::pair<int,std::pair<int,int> > > i){
+	items = i;
+}
+
+void cScene::DeleteItem(int ci){
+	items.erase(items.begin()+ci);
+}
+
 bool cScene::LoadLevel(int level)
 {
 	errno_t err;
@@ -220,9 +232,9 @@ void cScene::AI()
 		monsters[i].AI(map);
 	}
 }
-void cScene::AddShot(int x, int y, int w, int h, int dir, int t)
+void cScene::AddShot(int x, int y, int w, int h, int dir, int t, bool power_shot)
 {
-	cShot* s = new cShot();
+	cShot* s = new cShot(power_shot);
 	cShot ss = *s;
 	ss.SetPosition(x,y);
 	ss.SetWidthHeight(w,h);
@@ -250,6 +262,7 @@ void cScene::DrawShots(int tex_id){
 			xo=0.0f;
 			yo=0.0f+aux;
 		}
+		if(shots[i].GetPowerShot()) xo+=0.25f; 
 		xf=xo+0.25f;
 		yf=yo+.25f;
 		shots[i].DrawRect(tex_id,xo,yo,xf,yf);
@@ -262,14 +275,15 @@ void cScene::ShotCollisions(std::vector<int>* coll)
 		int m = shots[i].CollidesMonstre(monsters);
 		if (m > -1)
 		{
-			shots.erase(shots.begin()+i);
 			int state = monsters[m].GetState();
 			if (state == STATE_FREEZE_L4 || state == STATE_FREEZE_R4)
 			{
 				(*coll).push_back(m);
 			}
-			monsters[m].DecreaseHP(SHOT_DAMAGE);
+			if (shots[i].GetPowerShot()) monsters[m].DecreaseHP(2*SHOT_DAMAGE);
+			else monsters[m].DecreaseHP(SHOT_DAMAGE);
 			monsters[m].Freeze();
+			shots.erase(shots.begin()+i);
 		}
 	}
 }

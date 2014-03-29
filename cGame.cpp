@@ -7,7 +7,10 @@ cGame::cGame(void)
 	mortPlayer = false;
 	punts = 0;
 	maxPunts = 0;
-	lvl = 2;
+	lvl = 1;
+	clock_t act_time;
+	act_time = clock();
+	old_time = act_time;
 }
 
 cGame::~cGame(void)
@@ -113,7 +116,7 @@ bool cGame::Process()
 		else												Player.Stop(Scene.GetMap());
 		if(keys['z'] && cd == 0) 
 		{
-			Scene.AddShot(x,y,w,h,dir,1);
+			Scene.AddShot(x,y,w,h,dir,1,Player.GetBuffStatus(POWER_SHOT_BUFF_ID));
 			Player.SetShotCd(SHOT_CD);
 			if(dir == LEFT_DIRECTION) Player.SetState(STATE_ATACL);
 			else if(dir == RIGHT_DIRECTION)  Player.SetState(STATE_ATACR);
@@ -125,7 +128,7 @@ bool cGame::Process()
 		w=h=30;
 		if (Scene.GetMonsters()[1].GetState() <= STATE_CAUREL) dir = 0;
 		else dir = 1;
-		Scene.AddShot(x,y,w,h,dir,2);
+		Scene.AddShot(x,y,w,h,dir,2,false);
 	}
 
 	Scene.AI();
@@ -134,8 +137,7 @@ bool cGame::Process()
 	Player.Logic(Scene.GetMap());
 	Scene.Logic();
 
-	// Player-monster collisions (TODO: ficar dincs de cScene.Logic()?)
-	int collision = Player.CollidesMonstre(Scene.GetMonsters(),false);
+	int collision = Player.CollidesMonstre(Scene.GetMonsters());
 	
 	if (collision>=0){
 		bool c; Scene.GetMonsters()[collision].GetCongelat(&c);
@@ -184,7 +186,7 @@ bool cGame::Process()
 			if(dirm==LEFT_DIRECTION){
 				int s = -1;
 			}
-			Scene.AddShot(xm,ym,wm,hm,dirm,2);
+			Scene.AddShot(xm,ym,wm,hm,dirm,2,false);
 			monstre.SetBolaFoc(false);
 		}
 	}
@@ -201,6 +203,12 @@ bool cGame::Process()
 			Player.SetState(STATE_DEATH_FOC);
 		}
 	}
+
+	// colisió Item Player
+	std::vector<std::pair<int,std::pair<int,int> > > items;
+	items = Scene.GetItems();
+	int ci = Player.CollidesItem(items);
+	if (ci >= 0) Scene.DeleteItem(ci);
 
 	//Interfície gràfica
 	Player.GetVida(&vida);
@@ -248,6 +256,7 @@ void cGame::Render()
 	//DrawImg(Data.GetID(IMG_LOGO),10,10,32,32);
 
 	render_info();
+	fps();
 
 	glutSwapBuffers();
 }
@@ -261,6 +270,25 @@ void cGame::render_string(void* font, const char* string)
 		glutBitmapCharacter(font, string[i]);
 }
 
+void cGame::fps()
+{
+	clock_t act_time;
+	act_time = clock();
+	int fps = act_time-old_time;
+	//fps = (((float)act_time - (float)old_time) / 1000000.0F ) * 1000;
+	fps = 60/fps;
+	old_time = act_time;
+	char bufffps[10];
+	itoa(fps,bufffps,10 );
+	char *s[]={	"fps: ", bufffps};
+	
+	glDisable(GL_TEXTURE_2D);
+		glRasterPos2f(GAME_WIDTH-50,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[0]);
+		glRasterPos2f(GAME_WIDTH-30,GAME_HEIGHT-10);
+		render_string(GLUT_BITMAP_HELVETICA_10,s[1]);
+	glEnable(GL_TEXTURE_2D);
+}
 
 // Render information
 void cGame::render_info()

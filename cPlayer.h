@@ -14,7 +14,8 @@ public:
 	~cPlayer();
 
 	void Draw(int tex_id);
-	int CollidesMonstre(std::vector<cMonstre> monsters,bool right);
+	int CollidesMonstre(std::vector<cMonstre> monsters);
+	int CollidesItem(std::vector<std::pair<int,std::pair<int,int> > > items);
 	bool CollidesMonstre(cMonstre monster, bool state_freeze = true);
 	void Death();
 

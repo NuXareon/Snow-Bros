@@ -8,6 +8,8 @@ cPlayer::cPlayer() {
 	death = false;
 	vida = 3;
 	death_cd = PLAYER_DEATH_CD;
+	DisableBuff(SPEED_BUFF_ID);
+	DisableBuff(POWER_SHOT_BUFF_ID);
 }
 cPlayer::~cPlayer(){}
 
@@ -24,11 +26,26 @@ void cPlayer::Draw(int tex_id)
 		case STATE_LOOKRIGHT:	xo = 0.5f;	yo = 0.125f;
 								break;
 		//1..3
-		case STATE_WALKLEFT:	xo = 0.125f + (GetFrame()*0.125f);	yo = 0.125f;
+		case STATE_WALKLEFT:	
+								if (GetBuffStatus(SPEED_BUFF_ID)) 
+								{
+									xo = 0.625f + (GetFrame()*0.125f); yo = 0.25;
+								}
+								else {
+									xo = 0.125f + (GetFrame()*0.125f);	yo = 0.125f;
+								}
 								NextFrame(3);
 								break;
 		//4..6
-		case STATE_WALKRIGHT:	xo = 0.625f + (GetFrame()*0.125f); yo = 0.125f;
+		case STATE_WALKRIGHT:	
+								if (GetBuffStatus(SPEED_BUFF_ID)) 
+								{
+									xo = 0.625f + (GetFrame()*0.125f); yo = 0.25f;
+								}
+								else
+								{
+									xo = 0.625f + (GetFrame()*0.125f); yo = 0.125f;
+								}
 								NextFrame(3);
 								break;
 		//
@@ -66,8 +83,7 @@ void cPlayer::Draw(int tex_id)
 	DrawRect(tex_id,xo,yo,xf,yf);
 }
 
-//a millorar
-int cPlayer::CollidesMonstre(std::vector<cMonstre> monsters,bool right)
+int cPlayer::CollidesMonstre(std::vector<cMonstre> monsters)
 {
 	int tile_x,tile_y;
 	int i;
@@ -129,6 +145,42 @@ bool cPlayer::CollidesMonstre(cMonstre monster, bool state_freeze)
 
 	return false;
 }
+
+int cPlayer::CollidesItem(std::vector<std::pair<int,std::pair<int,int> > > items)
+{
+	int tile_x,tile_y;
+	int i;
+	int width_tiles,height_tiles;
+	int x, y;
+	int w,h;
+	int xm, ym;
+	int wm,hm;
+	GetWidthHeight(&w,&h);
+	GetPosition(&x,&y);
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+	width_tiles  = w / TILE_SIZE;
+	height_tiles = h / TILE_SIZE;
+
+	int tile_xr = tile_x + width_tiles;
+	int tile_xl = tile_x;
+
+	for (i=0; i<items.size(); ++i)
+	{
+		xm = items[i].second.first;
+		ym = items[i].second.second;
+		wm = hm = TILE_SIZE;
+		if ((abs((x+w/2)-(xm+wm/2)) < (w+wm)/2) && (abs((y+h/2)-(ym+hm/2)) < (h+hm)/2))
+		{
+			if (items[i].first == POWER_SHOT_BUFF_ID) EnableBuff(POWER_SHOT_BUFF_ID);
+			if (items[i].first == SPEED_BUFF_ID) EnableBuff(SPEED_BUFF_ID);
+			return i;
+		}
+	}	
+	return -1;
+}
+
 
 void cPlayer::Death(){
 

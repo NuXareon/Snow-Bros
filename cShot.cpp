@@ -2,10 +2,11 @@
 #include "cScene.h"
 #include "Globals.h"
 
-cShot::cShot(void)
+cShot::cShot(bool power_shot)
 {
 	ttl = SHOT_TTL;
 	jump_alfa = 0;
+	shot_buff = power_shot;
 }
 cShot::~cShot(void){}
 
@@ -46,7 +47,10 @@ void cShot::GetTipus(int *t)
 {
 	*t = tipus;
 }
-
+bool cShot::GetPowerShot()
+{
+	return shot_buff;
+}
 void cShot::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 {
 	int screen_x,screen_y;
