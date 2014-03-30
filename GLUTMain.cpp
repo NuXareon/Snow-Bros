@@ -42,7 +42,10 @@ void AppMouse(int button, int state, int x, int y)
 void AppIdle()
 {
 	if(Menu.GetMenu() == 3){
-		if(!Game.Loop()) exit(0);
+		if(!Game.Loop(false)) exit(0);
+	}
+	else if (Menu.GetMenu() == 2){
+		if(!Game.Loop(true)) exit(0);
 	}
 	else{
 		if(!Menu.Loop()) exit(0);

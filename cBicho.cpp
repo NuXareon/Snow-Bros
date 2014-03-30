@@ -185,7 +185,7 @@ void cBicho::MoveLeft(int *map)
 	int xaux;
 	
 	//Whats next tile?
-	if( (x % TILE_SIZE) == 0)
+	if( (x % TILE_SIZE) == 0 || x < 2)
 	{
 		xaux = x;
 		if (buff_speed) x -= 2*STEP_LENGTH;
@@ -217,7 +217,7 @@ void cBicho::MoveRight(int *map)
 	int xaux;
 
 	//Whats next tile?
-	if( (x % TILE_SIZE) == 0)
+	if( (x % TILE_SIZE) == 0 || x > SCENE_WIDTH*TILE_SIZE-2)
 	{
 		xaux = x;
 		if (buff_speed) x += 2*STEP_LENGTH;

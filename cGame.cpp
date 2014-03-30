@@ -6,7 +6,9 @@ cGame::cGame(void)
 {
 	mortPlayer = false;
 	punts = 0;
+	punts2 = 0;
 	maxPunts = 0;
+	maxPunts2 = 0;
 	lvl = 1;
 	clock_t act_time;
 	act_time = clock();
@@ -54,15 +56,19 @@ bool cGame::Init()
 	Player.SetWidthHeight(32,32);
 	Player.SetState(STATE_LOOKRIGHT);
 
+	Player2.SetTile(5,1);
+	Player2.SetWidthHeight(32,32);
+	Player2.SetState(STATE_LOOKRIGHT);
+
 	return res;
 }
 
-bool cGame::Loop()
+bool cGame::Loop(bool second_player)
 {
 	bool res=true;
 
-	res = Process();
-	if(res) Render();
+	res = Process(second_player);
+	if(res) Render(second_player);
 
 	return res;
 }
@@ -87,7 +93,7 @@ void cGame::ReadMouse(int button, int state, int x, int y)
 }
 
 //Process
-bool cGame::Process()
+bool cGame::Process(bool second_player)
 {
 	bool res=true;
 	int x,y;
@@ -131,10 +137,41 @@ bool cGame::Process()
 		Scene.AddShot(x,y,w,h,dir,2,false);
 	}
 
+	// player 2 input
+	if (second_player)
+	{
+		Player2.GetPosition(&x,&y);
+		s = Player2.GetState();
+		if (s <= STATE_CAUREL) dir = LEFT_DIRECTION;
+		else dir = RIGHT_DIRECTION;
+
+		Player2.GetShotCd(&cd);
+
+		//Process Input
+		bool mortP;
+		Player2.GetMort(&mortP);
+	
+		if(!mortP){ //esta viu??
+			if(keys['i'])				Player2.Jump(Scene.GetMap());
+			if(keys['j'])				Player2.MoveLeft(Scene.GetMap());
+			else if(keys['l'])			Player2.MoveRight(Scene.GetMap());
+			else						Player2.Stop(Scene.GetMap());
+			if(keys['a'] && cd == 0) 
+			{
+				Scene.AddShot(x,y,w,h,dir,1,Player2.GetBuffStatus(POWER_SHOT_BUFF_ID));
+				Player2.SetShotCd(SHOT_CD);
+				if(dir == LEFT_DIRECTION) Player2.SetState(STATE_ATACL);
+				else if(dir == RIGHT_DIRECTION)  Player2.SetState(STATE_ATACR);
+				punts2++;
+			}
+		}
+	}
+
 	Scene.AI();
 	
 	//Game Logic
 	Player.Logic(Scene.GetMap());
+	if (second_player) Player2.Logic(Scene.GetMap());
 	Scene.Logic();
 
 	int collision = Player.CollidesMonstre(Scene.GetMonsters());
@@ -146,9 +183,24 @@ bool cGame::Process()
 			Player.SetState(STATE_DEATH);
 		}
 	}
+
 	bool pd;
 	Player.GetDeath(&pd);
 	if(pd) Player.Death();
+
+	if (second_player)
+	{
+		int collision = Player2.CollidesMonstre(Scene.GetMonsters());
+		if (collision>=0){
+			bool c; Scene.GetMonsters()[collision].GetCongelat(&c);
+			if(c){
+				Player2.SetMort(true);
+				Player2.SetState(STATE_DEATH);
+			}
+		}
+		Player2.GetDeath(&pd);
+		if(pd) Player2.Death();
+	}
 
 	std::vector<int> shot_collisions;
 	Scene.ShotCollisions(&shot_collisions);
@@ -164,6 +216,16 @@ bool cGame::Process()
 				int pstate = Player.GetState();
 				bool roll_direction_left = ((pstate <= STATE_CAUREL && pstate >= STATE_LOOKLEFT) || pstate == STATE_ATACL);
 				Scene.Roll(shot_collisions[i], roll_direction_left);
+			}
+			if (second_player)
+			{
+				ps_collision = Player2.CollidesMonstre(Scene.GetMonsters(shot_collisions[i]), false);
+				if (ps_collision) 
+				{
+					int pstate = Player2.GetState();
+					bool roll_direction_left = ((pstate <= STATE_CAUREL && pstate >= STATE_LOOKLEFT) || pstate == STATE_ATACL);
+					Scene.Roll(shot_collisions[i], roll_direction_left);
+				}
 			}
 		}
 	}
@@ -202,6 +264,16 @@ bool cGame::Process()
 			Player.SetMort(true);
 			Player.SetState(STATE_DEATH_FOC);
 		}
+		else if (second_player)
+		{
+			p = shots[i].CollidesPlayer(Player2);
+			if(p > -1){
+				shots.erase(shots.begin()+i);
+				Scene.Setshot(shots);
+				Player2.SetMort(true);
+				Player2.SetState(STATE_DEATH_FOC);
+			}
+		}
 	}
 
 	// colisió Item Player
@@ -209,6 +281,11 @@ bool cGame::Process()
 	items = Scene.GetItems();
 	int ci = Player.CollidesItem(items);
 	if (ci >= 0) Scene.DeleteItem(ci);
+	else if (second_player)
+	{
+		ci = Player2.CollidesItem(items);
+		if (ci >= 0) Scene.DeleteItem(ci);
+	}
 
 	//Interfície gràfica
 	Player.GetVida(&vida);
@@ -218,7 +295,17 @@ bool cGame::Process()
 		if(maxPunts<punts) maxPunts = punts;
 		punts = 0;
 	}
-	
+
+	if (second_player)
+	{
+		Player2.GetVida(&vida);
+		if(vida == 0){
+			Scene.LoadLevel(lvl);
+			Player2.SetVida(3);
+			if(maxPunts2<punts2) maxPunts = punts;
+			punts2 = 0;
+		}
+	}
 	bool next_level = Scene.GetMonsters().size() == 0;
 	if (next_level)
 	{
@@ -240,7 +327,7 @@ bool cGame::Process()
 }
 
 //Output
-void cGame::Render()
+void cGame::Render(bool second_player)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
@@ -252,10 +339,11 @@ void cGame::Render()
 	Scene.DrawShots(Data.GetID(IMG_SHOT_P));
 	//Scene.DrawShots(Data.GetID(IMG_SHOT_M));
 	Player.Draw(Data.GetID(IMG_PLAYER));
+	if (second_player) Player2.Draw(Data.GetID(IMG_PLAYER));
 
 	//DrawImg(Data.GetID(IMG_LOGO),10,10,32,32);
 
-	render_info();
+	render_info(second_player);
 	fps();
 
 	glutSwapBuffers();
@@ -291,7 +379,7 @@ void cGame::fps()
 }
 
 // Render information
-void cGame::render_info()
+void cGame::render_info(bool second_player)
 {
 	int vida;
 	char buffvida[10], buffpunts[10],buffmaxPunts[10];
@@ -304,6 +392,7 @@ void cGame::render_info()
 				"Maxima puntuacio: ", buffmaxPunts
 			  };
 	
+	// Player 1
 	glDisable(GL_TEXTURE_2D);
 		glRasterPos2f(GAME_WIDTH/4,GAME_HEIGHT-10);
 		render_string(GLUT_BITMAP_HELVETICA_10,s[0]);
@@ -320,6 +409,36 @@ void cGame::render_info()
 		glRasterPos2f(GAME_WIDTH/4 + 290,GAME_HEIGHT-10);
 		render_string(GLUT_BITMAP_HELVETICA_10,s[5]);
 	glEnable(GL_TEXTURE_2D);
+
+	if (second_player)
+	{
+		Player2.GetVida(&vida);
+		itoa(vida,buffvida,10 );
+		itoa(punts2,buffpunts,10 );
+		itoa(maxPunts2,buffmaxPunts,10 );
+		char *s[]={	"Vida: ", buffvida,
+					"Punts: ", buffpunts,
+					"Maxima puntuacio: ", buffmaxPunts
+				  };
+	
+		// Player 2
+		glDisable(GL_TEXTURE_2D);
+			glRasterPos2f(GAME_WIDTH/4,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[0]);
+			glRasterPos2f(GAME_WIDTH/4 + 30,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[1]);
+
+			glRasterPos2f(GAME_WIDTH/4 + 100,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[2]);
+			glRasterPos2f(GAME_WIDTH/4 + 140,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[3]);
+
+			glRasterPos2f(GAME_WIDTH/4 + 200,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[4]);
+			glRasterPos2f(GAME_WIDTH/4 + 290,GAME_HEIGHT-25);
+			render_string(GLUT_BITMAP_HELVETICA_10,s[5]);
+		glEnable(GL_TEXTURE_2D);
+	}
 }
 
 void cGame::UpdatePunts(int x){
