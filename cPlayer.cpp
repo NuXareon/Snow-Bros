@@ -190,6 +190,8 @@ void cPlayer::Death(){
 		death = false;
 		vida--;
 		SetState(STATE_LOOKRIGHT);
+		DisableBuff(POWER_SHOT_BUFF_ID);
+		DisableBuff(SPEED_BUFF_ID);
 	}
 }
 
